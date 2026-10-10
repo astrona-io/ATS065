@@ -1,0 +1,73 @@
+# Preparation scaffold. Technical pages stay draft until authoring and review.
+training:
+  id: ATS065
+  title: 'CGOA: GitOps Principles'
+  description: Preparation scaffold for GitOps Principles. Lessons and environments are planned.
+  certification:
+    name: Certified GitOps Associate
+    code: CGOA
+    provider: CNCF / Linux Foundation
+    domain: GitOps Principles
+    weight: 30
+    competencies:
+    - Declarative
+    - Versioned and Immutable
+    - Pulled Automatically
+    - Continuously Reconciled
+modules:
+- id: module-intro
+  title: Introduction
+  description: Planned introduction and authoring status.
+  content:
+  - type: reading
+    title: Introduction
+    path: sections/intro/README.md
+  - type: reading
+    title: Welcome To The Course
+    path: sections/intro/course-01-welcome.md
+  - type: reading
+    title: Get Your Machine Ready
+    path: sections/intro/course-02-get-your-machine-ready.md
+  - type: reading
+    title: How This Course Is Made
+    path: sections/intro/course-03-how-this-course-is-made.md
+- id: module-010
+  title: Declarative
+  description: Planned coverage of this curriculum objective.
+  content:
+  - type: reading
+    title: Section Overview
+    path: sections/section-010/README.md
+  - type: reading
+    title: Declarative
+    path: sections/section-010/module-01/course.md
+- id: module-020
+  title: Versioned and Immutable
+  description: Planned coverage of this curriculum objective.
+  content:
+  - type: reading
+    title: Section Overview
+    path: sections/section-020/README.md
+  - type: reading
+    title: Versioned and Immutable
+    path: sections/section-020/module-01/course.md
+- id: module-030
+  title: Pulled Automatically
+  description: Planned coverage of this curriculum objective.
+  content:
+  - type: reading
+    title: Section Overview
+    path: sections/section-030/README.md
+  - type: reading
+    title: Pulled Automatically
+    path: sections/section-030/module-01/course.md
+- id: module-040
+  title: Continuously Reconciled
+  description: Planned coverage of this curriculum objective.
+  content:
+  - type: reading
+    title: Section Overview
+    path: sections/section-040/README.md
+  - type: reading
+    title: Continuously Reconciled
+    path: sections/section-040/module-01/course.md
