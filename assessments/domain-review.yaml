@@ -1,0 +1,243 @@
+schema_version: 1
+kind: question_bank
+id: ats065-domain-review
+course_id: ATS065
+exam_code: CGOA
+status: draft
+provenance: Original practice material; not official examination questions.
+scope:
+  type: domain
+  id: domain-review
+  title: GitOps Principles
+placement:
+  position: after
+  reading: sections/section-040/module-01/course-02-summary.md
+questions:
+- id: ats065-domain-review-q01
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Assess whether a declaration expresses sufficient managed intent.
+  source_readings:
+  - sections/section-010/module-01/course-01-sufficient-intent-rendering-and-controller-contracts.md
+  prompt: Does a command script become declarative merely by being committed?
+  options:
+  - id: a
+    text: No; its meaning still prescribes a procedure.
+    explanation: Storage and input semantics are different.
+  - id: b
+    text: Yes; every file in Git is declarative.
+    explanation: Git can store many forms of content.
+  - id: c
+    text: Yes; a filename ending in YAML proves it.
+    explanation: Format does not establish intended-state meaning.
+  correct_option: a
+  explanation: Storage and input semantics are different.
+- id: ats065-domain-review-q02
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Explain rendering inputs and controller ownership.
+  source_readings:
+  - sections/section-010/module-01/course-01-sufficient-intent-rendering-and-controller-contracts.md
+  prompt: Why include rendering dependencies in review?
+  options:
+  - id: a
+    text: Rendering never changes output.
+    explanation: It produces concrete output from inputs.
+  - id: b
+    text: Only browser fonts affect rendering tools.
+    explanation: Infrastructure rendering has its own contracts.
+  - id: c
+    text: They influence the concrete intent produced from higher-level input.
+    explanation: Changed defaults or templates can change resources.
+  correct_option: c
+  explanation: Changed defaults or templates can change resources.
+- id: ats065-domain-review-q03
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Distinguish declarative management from a script stored in version control.
+  source_readings:
+  - sections/section-010/module-01/course-01-sufficient-intent-rendering-and-controller-contracts.md
+  prompt: What else matters after schema validation passes?
+  options:
+  - id: a
+    text: Every historical database row is restored.
+    explanation: Schema validity does not recover data.
+  - id: b
+    text: Policy, ownership and whether the target can satisfy intent.
+    explanation: Shape validity is narrower than safe operation.
+  - id: c
+    text: Nothing; all valid requests always converge.
+    explanation: Capacity and permissions can block them.
+  correct_option: b
+  explanation: Shape validity is narrower than safe operation.
+- id: ats065-domain-review-q04
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Explain immutable content identity and retained version history.
+  source_readings:
+  - sections/section-020/module-01/course-01-immutable-versions-moving-references-and-auditable-promotion.md
+  prompt: Which reference most clearly identifies a particular Git version?
+  options:
+  - id: a
+    text: A specific commit identity.
+    explanation: It identifies a concrete tree and history.
+  - id: b
+    text: A branch name alone.
+    explanation: The branch can move.
+  - id: c
+    text: The word production.
+    explanation: An environment name is not content identity.
+  correct_option: a
+  explanation: It identifies a concrete tree and history.
+- id: ats065-domain-review-q05
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Distinguish promotion from rebuilding and mutable reference movement.
+  source_readings:
+  - sections/section-020/module-01/course-01-immutable-versions-moving-references-and-auditable-promotion.md
+  prompt: Why promote a known artifact rather than rebuild blindly for each environment?
+  options:
+  - id: a
+    text: Every rebuild always uses identical dependencies.
+    explanation: Inputs can differ.
+  - id: b
+    text: Artifacts cannot be referenced in configuration.
+    explanation: They commonly are.
+  - id: c
+    text: Rebuilding can produce different content from changed inputs.
+    explanation: Promotion can preserve tested artifact identity.
+  correct_option: c
+  explanation: Promotion can preserve tested artifact identity.
+- id: ats065-domain-review-q06
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Reason about policy, artifact inputs and secret handling.
+  source_readings:
+  - sections/section-020/module-01/course-01-immutable-versions-moving-references-and-auditable-promotion.md
+  prompt: Does immutable history justify storing plaintext credentials?
+  options:
+  - id: a
+    text: Yes, because a commit hash encrypts every file.
+    explanation: A hash is not encryption.
+  - id: b
+    text: No; history preserves exposed secrets across versions and copies.
+    explanation: Secret handling needs its own protected contract.
+  - id: c
+    text: Yes, because old commits are always inaccessible.
+    explanation: Retained history can be read.
+  correct_option: b
+  explanation: Secret handling needs its own protected contract.
+- id: ats065-domain-review-q07
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Explain agent retrieval of authoritative desired state.
+  source_readings:
+  - sections/section-030/module-01/course-01-agent-owned-retrieval-and-event-accelerated-reconciliation.md
+  prompt: What is the key automatic-pull responsibility?
+  options:
+  - id: a
+    text: The management agent retrieves authoritative desired state independently.
+    explanation: It can recover state beyond a single pushed event.
+  - id: b
+    text: A webhook contains every required historical version forever.
+    explanation: Notifications do not establish that store.
+  - id: c
+    text: Every developer sends cluster administrator credentials to the browser.
+    explanation: That is unrelated and unsafe.
+  correct_option: a
+  explanation: It can recover state beyond a single pushed event.
+- id: ats065-domain-review-q08
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Distinguish a notification from pushed authoritative deployment content.
+  source_readings:
+  - sections/section-030/module-01/course-01-agent-owned-retrieval-and-event-accelerated-reconciliation.md
+  prompt: Can a webhook coexist with pull-based GitOps?
+  options:
+  - id: a
+    text: No; any event automatically destroys the pull contract.
+    explanation: The authoritative retrieval path matters.
+  - id: b
+    text: Yes, only if it replaces all source history.
+    explanation: That would weaken recovery.
+  - id: c
+    text: Yes; it can prompt the agent to retrieve and evaluate authoritative state.
+    explanation: The event accelerates observation.
+  correct_option: c
+  explanation: The event accelerates observation.
+- id: ats065-domain-review-q09
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Reason about source access, recovery and target credentials.
+  source_readings:
+  - sections/section-030/module-01/course-01-agent-owned-retrieval-and-event-accelerated-reconciliation.md
+  prompt: What remains necessary for an agent that pulls configuration?
+  options:
+  - id: a
+    text: A guarantee that every repository change is safe.
+    explanation: Trust and policy still require review.
+  - id: b
+    text: Controlled source access and scoped target authority.
+    explanation: Retrieval and action cross separate boundaries.
+  - id: c
+    text: No permissions of any kind.
+    explanation: Both boundaries need access contracts.
+  correct_option: b
+  explanation: Retrieval and action cross separate boundaries.
+- id: ats065-domain-review-q10
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Distinguish refresh and comparison from synchronization.
+  source_readings:
+  - sections/section-040/module-01/course-01-drift-refresh-ignore-rules-and-reconciliation-patterns.md
+  prompt: What does a refresh principally seek?
+  options:
+  - id: a
+    text: Updated comparison information under the supported behavior.
+    explanation: It is distinct from applying a sync.
+  - id: b
+    text: A new application image build universally.
+    explanation: Build is separate.
+  - id: c
+    text: Automatic deletion of every resource.
+    explanation: Deletion requires its own policy.
+  correct_option: a
+  explanation: It is distinct from applying a sync.
+- id: ats065-domain-review-q11
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Explain live drift and source-driven updates.
+  source_readings:
+  - sections/section-040/module-01/course-01-drift-refresh-ignore-rules-and-reconciliation-patterns.md
+  prompt: What is a risk of broad ignore-difference rules?
+  options:
+  - id: a
+    text: They encrypt every ignored field.
+    explanation: Comparison settings do not supply confidentiality.
+  - id: b
+    text: They create missing API permissions.
+    explanation: Authorization is separate.
+  - id: c
+    text: Meaningful security or configuration drift can be hidden.
+    explanation: Ignored fields need a justified ownership reason.
+  correct_option: c
+  explanation: Ignored fields need a justified ownership reason.
+- id: ats065-domain-review-q12
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Compare bootstrap composition with ApplicationSet-generated Applications.
+  source_readings:
+  - sections/section-040/module-01/course-01-drift-refresh-ignore-rules-and-reconciliation-patterns.md
+  prompt: Why review an ApplicationSet's generated ownership?
+  options:
+  - id: a
+    text: It automatically makes every application healthy.
+    explanation: Health remains a separate outcome.
+  - id: b
+    text: The generator can restore child Application configuration.
+    explanation: Editing a child directly can conflict with its parent source.
+  - id: c
+    text: It permanently disables Git updates.
+    explanation: Generation follows configured inputs.
+  correct_option: b
+  explanation: Editing a child directly can conflict with its parent source.

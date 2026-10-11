@@ -1,8 +1,9 @@
-# Preparation scaffold. Technical pages stay draft until authoring and review.
+# Reading-only content; YAML knowledge checks have a separate index.
 training:
   id: ATS065
   title: 'CGOA: GitOps Principles'
-  description: Preparation scaffold for GitOps Principles. Lessons and environments are planned.
+  description: 'Detailed reading material and reusable YAML knowledge checks for CGOA: GitOps Principles.
+    Technical content remains draft. No labs or playgrounds.'
   certification:
     name: Certified GitOps Associate
     code: CGOA
@@ -17,7 +18,7 @@ training:
 modules:
 - id: module-intro
   title: Introduction
-  description: Planned introduction and authoring status.
+  description: Audience, reading method and review process.
   content:
   - type: reading
     title: Introduction
@@ -33,41 +34,69 @@ modules:
     path: sections/intro/course-03-how-this-course-is-made.md
 - id: module-010
   title: Declarative
-  description: Planned coverage of this curriculum objective.
+  description: Developed reading and reasoning for Declarative.
+  draft: true
   content:
-  - type: reading
-    title: Section Overview
-    path: sections/section-010/README.md
   - type: reading
     title: Declarative
+    path: sections/section-010/README.md
+  - type: reading
+    title: Sufficient Intent, Rendering And Controller Contracts
     path: sections/section-010/module-01/course.md
+  - type: reading
+    title: Sufficient Intent, Rendering And Controller Contracts
+    path: sections/section-010/module-01/course-01-sufficient-intent-rendering-and-controller-contracts.md
+  - type: reading
+    title: Summary
+    path: sections/section-010/module-01/course-02-summary.md
 - id: module-020
   title: Versioned and Immutable
-  description: Planned coverage of this curriculum objective.
+  description: Developed reading and reasoning for Versioned and Immutable.
+  draft: true
   content:
-  - type: reading
-    title: Section Overview
-    path: sections/section-020/README.md
   - type: reading
     title: Versioned and Immutable
+    path: sections/section-020/README.md
+  - type: reading
+    title: Immutable Versions, Moving References And Auditable Promotion
     path: sections/section-020/module-01/course.md
+  - type: reading
+    title: Immutable Versions, Moving References And Auditable Promotion
+    path: sections/section-020/module-01/course-01-immutable-versions-moving-references-and-auditable-promotion.md
+  - type: reading
+    title: Summary
+    path: sections/section-020/module-01/course-02-summary.md
 - id: module-030
   title: Pulled Automatically
-  description: Planned coverage of this curriculum objective.
+  description: Developed reading and reasoning for Pulled Automatically.
+  draft: true
   content:
-  - type: reading
-    title: Section Overview
-    path: sections/section-030/README.md
   - type: reading
     title: Pulled Automatically
+    path: sections/section-030/README.md
+  - type: reading
+    title: Agent-Owned Retrieval And Event-Accelerated Reconciliation
     path: sections/section-030/module-01/course.md
+  - type: reading
+    title: Agent-Owned Retrieval And Event-Accelerated Reconciliation
+    path: sections/section-030/module-01/course-01-agent-owned-retrieval-and-event-accelerated-reconciliation.md
+  - type: reading
+    title: Summary
+    path: sections/section-030/module-01/course-02-summary.md
 - id: module-040
   title: Continuously Reconciled
-  description: Planned coverage of this curriculum objective.
+  description: Developed reading and reasoning for Continuously Reconciled.
+  draft: true
   content:
   - type: reading
-    title: Section Overview
+    title: Continuously Reconciled
     path: sections/section-040/README.md
   - type: reading
-    title: Continuously Reconciled
+    title: Drift, Refresh, Ignore Rules And Reconciliation Patterns
     path: sections/section-040/module-01/course.md
+  - type: reading
+    title: Drift, Refresh, Ignore Rules And Reconciliation Patterns
+    path: sections/section-040/module-01/course-01-drift-refresh-ignore-rules-and-reconciliation-patterns.md
+  - type: reading
+    title: Summary
+    path: sections/section-040/module-01/course-02-summary.md
