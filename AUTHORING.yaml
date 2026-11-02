@@ -1,0 +1,100 @@
+version: 1
+approval: CGOA requested 2026-10-11; established reading-only scope
+course:
+  id: ATS065
+  certification:
+    name: Certified GitOps Associate
+    code: CGOA
+    provider: CNCF / Linux Foundation
+    domain: GitOps Principles
+    weight: 30
+    competencies:
+    - Declarative
+    - Versioned and Immutable
+    - Pulled Automatically
+    - Continuously Reconciled
+defaults:
+  playground: false
+  module_lab: false
+  capstone: false
+  section_quiz: false
+  final_quiz: true
+assessment_format: YAML question banks v1, registered in assessments/index.yaml
+sections:
+- id: section-010
+  title: Declarative
+  curriculum_item: Declarative
+  capstone: false
+  section_quiz: false
+  modules:
+  - id: module-01
+    title: Sufficient Intent, Rendering And Controller Contracts
+    objectives:
+    - Assess whether a declaration expresses sufficient managed intent.
+    - Explain rendering inputs and controller ownership.
+    - Distinguish declarative management from a script stored in version control.
+    outline:
+    - Sufficient Intent, Rendering And Controller Contracts
+    playground: false
+    module_lab: false
+    sources:
+    - reading: sections/section-010/module-01/course-01-sufficient-intent-rendering-and-controller-contracts.md
+      adapted_from: null
+- id: section-020
+  title: Versioned and Immutable
+  curriculum_item: Versioned and Immutable
+  capstone: false
+  section_quiz: false
+  modules:
+  - id: module-01
+    title: Immutable Versions, Moving References And Auditable Promotion
+    objectives:
+    - Explain immutable content identity and retained version history.
+    - Distinguish promotion from rebuilding and mutable reference movement.
+    - Reason about policy, artifact inputs and secret handling.
+    outline:
+    - Immutable Versions, Moving References And Auditable Promotion
+    playground: false
+    module_lab: false
+    sources:
+    - reading: sections/section-020/module-01/course-01-immutable-versions-moving-references-and-auditable-promotion.md
+      adapted_from: null
+- id: section-030
+  title: Pulled Automatically
+  curriculum_item: Pulled Automatically
+  capstone: false
+  section_quiz: false
+  modules:
+  - id: module-01
+    title: Agent-Owned Retrieval And Event-Accelerated Reconciliation
+    objectives:
+    - Explain agent retrieval of authoritative desired state.
+    - Distinguish a notification from pushed authoritative deployment content.
+    - Reason about source access, recovery and target credentials.
+    outline:
+    - Agent-Owned Retrieval And Event-Accelerated Reconciliation
+    playground: false
+    module_lab: false
+    sources:
+    - reading: sections/section-030/module-01/course-01-agent-owned-retrieval-and-event-accelerated-reconciliation.md
+      adapted_from: null
+- id: section-040
+  title: Continuously Reconciled
+  curriculum_item: Continuously Reconciled
+  capstone: false
+  section_quiz: false
+  modules:
+  - id: module-01
+    title: Drift, Refresh, Ignore Rules And Reconciliation Patterns
+    objectives:
+    - Distinguish refresh and comparison from synchronization.
+    - Explain live drift and source-driven updates.
+    - Evaluate ignore-difference settings and controller-owned fields.
+    - Compare bootstrap composition with ApplicationSet-generated Applications.
+    outline:
+    - Drift, Refresh, Ignore Rules And Reconciliation Patterns
+    playground: false
+    module_lab: false
+    sources:
+    - reading: sections/section-040/module-01/course-01-drift-refresh-ignore-rules-and-reconciliation-patterns.md
+      adapted_from: ATS061/sections/section-050/module-01/course-01-drift-refresh-ignore-rules-and-reconciliation-patterns.md
