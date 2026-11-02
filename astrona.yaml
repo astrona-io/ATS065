@@ -35,7 +35,7 @@ modules:
 - id: module-010
   title: Declarative
   description: Developed reading and reasoning for Declarative.
-  draft: true
+  status: alpha
   content:
   - type: reading
     title: Declarative
@@ -52,7 +52,7 @@ modules:
 - id: module-020
   title: Versioned and Immutable
   description: Developed reading and reasoning for Versioned and Immutable.
-  draft: true
+  status: alpha
   content:
   - type: reading
     title: Versioned and Immutable
@@ -69,7 +69,7 @@ modules:
 - id: module-030
   title: Pulled Automatically
   description: Developed reading and reasoning for Pulled Automatically.
-  draft: true
+  status: alpha
   content:
   - type: reading
     title: Pulled Automatically
@@ -86,7 +86,7 @@ modules:
 - id: module-040
   title: Continuously Reconciled
   description: Developed reading and reasoning for Continuously Reconciled.
-  draft: true
+  status: alpha
   content:
   - type: reading
     title: Continuously Reconciled
