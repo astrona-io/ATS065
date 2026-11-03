@@ -1,0 +1,88 @@
+# yaml-language-server: $schema=https://cli.astrona.io/schema/lab-config.schema.json
+#
+# Generate The Environment Applications With An ApplicationSet (LAB). Section 040.
+# Argo CD 3.5.4 and an in-cluster Gitea server (plumbing only). Built untested.
+apiVersion: astrona.io/v1
+metadata:
+  name: ats-065-lab-040-03
+  docs:
+    prerequisites: prerequisites.md
+    question: question.md
+    solution: solution.md
+
+runtime:
+  type: kind
+  kind:
+    image: kindest/node:v1.35.8
+    preloadImages:
+      - curlimages/curl:8.22.0
+      - ghcr.io/stefanprodan/podinfo:6.15.0
+      - ghcr.io/stefanprodan/podinfo:6.14.0
+      - gitea/gitea:28.1.0-rootless
+      - quay.io/argoproj/argocd:v3.5.4
+      - public.ecr.aws/docker/library/redis:8.2.3-alpine
+  portForwards:
+    - name: argocd
+      description: "Argo CD API server and web page"
+      namespace: argocd
+      resource: svc/argocd-server
+      targetPort: 443
+      hostPort: 8080
+      scheme: https
+    - name: gitea
+      description: "The Git server (git over HTTP)"
+      namespace: gitea
+      resource: svc/gitea-http
+      targetPort: 3000
+      hostPort: 3000
+      scheme: http
+
+bootstrap:
+  manifests:
+    - name: lab-start
+      type: file
+      source: manifests/lab-start.yaml
+  init:
+    - name: install-gitea
+      description: "Starts the in-cluster Git server"
+      type: file
+      source: bootstrap/01-install-gitea.sh
+    - name: install-argocd
+      description: "Installs Argo CD 3.5.4 (non-HA, without Dex and notifications)"
+      type: file
+      source: bootstrap/02-install-argocd.sh
+    - name: seed
+      description: "Pushes the repositories into Git"
+      type: file
+      source: bootstrap/03-seed.sh
+  waitFor:
+    - resource: deploy/shuttle
+      namespace: starfleet
+
+testing:
+  init:
+    - name: solution
+      description: Reference solution applied by `astrona test`
+      type: file
+      source: solution/apply.sh
+
+validation:
+  scripts:
+    - name: applicationset
+      description: "The ApplicationSet scout uses a list generator with staging and production"
+      type: file
+      source: validation/validate-applicationset.sh
+      hint: "Create an ApplicationSet named scout in the namespace argocd with a list generator that has the elements env: staging and env: production."
+    - name: applications
+      description: "The generated Applications use automated sync with prune, self-heal, CreateNamespace and PruneLast"
+      type: file
+      source: validation/validate-applications.sh
+      hint: "Put prune: true and selfHeal: true under automated, and list CreateNamespace=true and PruneLast=true under syncOptions in the template."
+    - name: delivered
+      description: "Each environment answers with its own message and the Applications are owned by the set"
+      type: file
+      source: validation/validate-delivered.sh
+      hint: "Do not create the Applications by hand. Let the ApplicationSet generate them."
+
+teardown:
+  keepCluster: false

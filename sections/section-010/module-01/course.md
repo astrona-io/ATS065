@@ -23,6 +23,7 @@ You should know what a pod, a Deployment, a namespace and a Service are, and wha
 1. Desired State Versus Imperative Steps
 2. Sufficient Intent And Rendering
 3. Controllers, Ownership And Pruning
-4. Summary
+4. Where Imperative Steps Still Fit
+5. Summary
 
 <!-- astrona:playground -->

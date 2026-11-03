@@ -8,7 +8,7 @@ provenance: Original practice material written for this course; not official exa
 scope:
   type: section
   id: section-010
-  title: "Declared State, Rendering, Apply Semantics And Controllers"
+  title: "Declared State, Rendering, Layout And Controllers"
 questions:
   - id: ats065-010-q01
     type: single_choice
@@ -470,3 +470,141 @@ questions:
         explanation: "It can read them. The result is not repeatable."
     correct_option: b
     explanation: "Correct. A moving reference changes the render without a new commit, which breaks the link between the commit and what runs."
+  - id: ats065-010-q21
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Place one-time actions"
+    source_readings:
+      - sections/section-010/module-01/course-04-where-imperative-steps-still-fit.md
+    prompt: |-
+      A team must run a database migration once per release. Which approach fits the declarative principle best?
+    options:
+      - id: a
+        text: "Run it as a Job or hook that Git declares, so the trigger is a commit and the result is visible, and keep any state it creates out of the loop's ownership."
+        explanation: "One-time actions can be declared as objects tied to a commit, which keeps the record in Git."
+      - id: b
+        text: "Run it by hand on a laptop after each deploy and tell nobody."
+        explanation: "This leaves no record in Git."
+      - id: c
+        text: "Put the migration in the Deployment spec as a loop that repeats forever."
+        explanation: "A repeating loop is not a one-time action."
+      - id: d
+        text: "Avoid releases that need a migration."
+        explanation: "This is not always possible."
+    correct_option: a
+    explanation: "Correct. One-time actions can be declared as objects tied to a commit, which keeps the record in Git."
+  - id: ats065-010-q22
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Choose between base and overlay"
+    source_readings:
+      - sections/section-010/module-03/course-02-bases-overlays-and-reducing-duplication.md
+    prompt: |-
+      Staging and production share the same manifests except for the replica count and one label. Where should the shared manifests live?
+    options:
+      - id: a
+        text: "Copied into both environment folders so each is complete."
+        explanation: "Copies drift apart over time."
+      - id: b
+        text: "In a base that both overlays reference, with only the differences in each overlay."
+        explanation: "A base holds what is common, and each overlay patches what differs."
+      - id: c
+        text: "Only in the staging folder, and production reads staging."
+        explanation: "Production would depend on staging changes."
+      - id: d
+        text: "In the cluster only, not in Git."
+        explanation: "The declared state must be in Git."
+    correct_option: b
+    explanation: "Correct. A base holds what is common, and each overlay patches what differs."
+  - id: ats065-010-q23
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Name the two ways of passing settings"
+    source_readings:
+      - sections/section-010/module-03/course-03-environment-settings-and-defaults.md
+    prompt: |-
+      A ConfigMap value changes in Git and Argo CD syncs it. The pods keep the old value. Why?
+    options:
+      - id: a
+        text: "Argo CD does not apply ConfigMaps."
+        explanation: "It applies ConfigMaps like any object."
+      - id: b
+        text: "Kubernetes deletes ConfigMap changes after a minute."
+        explanation: "It does not."
+      - id: c
+        text: "A ConfigMap change does not restart pods that read it as environment variables, so the pods must be restarted or the Deployment template must change."
+        explanation: "Environment variables are read at container start."
+      - id: d
+        text: "The sync failed silently and the status is always Synced."
+        explanation: "The ConfigMap was applied. Containers read it only at start."
+    correct_option: c
+    explanation: "Correct. Environment variables are read at container start."
+  - id: ats065-010-q24
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Pick a pre-merge check"
+    source_readings:
+      - sections/section-010/module-03/course-04-validating-declarations-before-merge.md
+    prompt: |-
+      Which pre-merge check shows what a change would alter in a cluster?
+    options:
+      - id: a
+        text: "`kubectl version`, which prints the client version."
+        explanation: "It says nothing about the change."
+      - id: b
+        text: "A spell check of the manifest."
+        explanation: "It checks text only."
+      - id: c
+        text: "`git log`, which lists old commits."
+        explanation: "It shows history, not the effect."
+      - id: d
+        text: "`kubectl diff` against the rendered output, which the API server evaluates as a dry run."
+        explanation: "A diff against live state shows the effect of the change."
+    correct_option: d
+    explanation: "Correct. A diff against live state shows the effect of the change."
+  - id: ats065-010-q25
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Render before merging"
+    source_readings:
+      - sections/section-010/module-03/course-04-validating-declarations-before-merge.md
+    prompt: |-
+      Why render a Kustomize overlay in the pull request, and not only lint its YAML?
+    options:
+      - id: a
+        text: "A file can be valid YAML and still fail to render, for example when a patch targets a name that does not exist."
+        explanation: "Rendering catches errors that a syntax check cannot see."
+      - id: b
+        text: "Rendering is required by Git."
+        explanation: "Git does not require it."
+      - id: c
+        text: "Linting never finds errors."
+        explanation: "Linting finds syntax and schema errors, but not all render errors."
+      - id: d
+        text: "Rendering makes the commit smaller."
+        explanation: "It does not change the commit."
+    correct_option: a
+    explanation: "Correct. Rendering catches errors that a syntax check cannot see."
+  - id: ats065-010-q26
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Separate application and configuration"
+    source_readings:
+      - sections/section-010/module-03/course-01-repository-structure-and-environments.md
+    prompt: |-
+      Why do many teams keep deployment configuration in a repository separate from the application code?
+    options:
+      - id: a
+        text: "Git forbids code and YAML in one repository."
+        explanation: "Git allows it."
+      - id: b
+        text: "A change to the declared state can be reviewed and pulled without triggering an application build, and the pull credentials do not need access to source code."
+        explanation: "The two have different change rates and different audiences."
+      - id: c
+        text: "Argo CD can only read repositories without code."
+        explanation: "It can read any repository."
+      - id: d
+        text: "It makes images build faster."
+        explanation: "Build speed is not the reason."
+    correct_option: b
+    explanation: "Correct. The two have different change rates and different audiences."

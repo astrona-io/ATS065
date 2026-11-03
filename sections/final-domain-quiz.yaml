@@ -838,3 +838,187 @@ questions:
         explanation: "Unknown is a failure to compare."
     correct_option: a
     explanation: "Correct. Comparison errors come from fetching or rendering the desired state."
+  - id: ats065-final-q37
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Choose between base and overlay"
+    source_readings:
+      - sections/section-010/module-03/course-02-bases-overlays-and-reducing-duplication.md
+    prompt: |-
+      Staging and production share the same manifests except for the replica count and one label. Where should the shared manifests live?
+    options:
+      - id: a
+        text: "Copied into both environment folders so each is complete."
+        explanation: "Copies drift apart over time."
+      - id: b
+        text: "In a base that both overlays reference, with only the differences in each overlay."
+        explanation: "A base holds what is common, and each overlay patches what differs."
+      - id: c
+        text: "Only in the staging folder, and production reads staging."
+        explanation: "Production would depend on staging changes."
+      - id: d
+        text: "In the cluster only, not in Git."
+        explanation: "The declared state must be in Git."
+    correct_option: b
+    explanation: "Correct. A base holds what is common, and each overlay patches what differs."
+  - id: ats065-final-q38
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Render before merging"
+    source_readings:
+      - sections/section-010/module-03/course-04-validating-declarations-before-merge.md
+    prompt: |-
+      Why render a Kustomize overlay in the pull request, and not only lint its YAML?
+    options:
+      - id: a
+        text: "Rendering is required by Git."
+        explanation: "Git does not require it."
+      - id: b
+        text: "Linting never finds errors."
+        explanation: "Linting finds syntax and schema errors, but not all render errors."
+      - id: c
+        text: "A file can be valid YAML and still fail to render, for example when a patch targets a name that does not exist."
+        explanation: "Rendering catches errors that a syntax check cannot see."
+      - id: d
+        text: "Rendering makes the commit smaller."
+        explanation: "It does not change the commit."
+    correct_option: c
+    explanation: "Correct. Rendering catches errors that a syntax check cannot see."
+  - id: ats065-final-q39
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Choose a version scheme"
+    source_readings:
+      - sections/section-020/module-03/course-01-versioning-schemes-and-identifiers.md
+    prompt: |-
+      A release identifier must tell a reader whether an upgrade may break users. Which scheme does that?
+    options:
+      - id: a
+        text: "A timestamp, which orders releases and says nothing about compatibility."
+        explanation: "A timestamp does not carry compatibility."
+      - id: b
+        text: "The word latest."
+        explanation: "It points to a moving image."
+      - id: c
+        text: "A random string."
+        explanation: "It carries no meaning."
+      - id: d
+        text: "Semantic versioning, where the major number changes for incompatible changes."
+        explanation: "The parts of a semantic version carry the compatibility meaning."
+    correct_option: d
+    explanation: "Correct. The parts of a semantic version carry the compatibility meaning."
+  - id: ats065-final-q40
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain image update automation"
+    source_readings:
+      - sections/section-020/module-03/course-03-image-update-automation.md
+    prompt: |-
+      How does image update automation keep Git as the source of truth?
+    options:
+      - id: a
+        text: "It writes the new tag as a commit to the repository, so the update has history and can be reverted."
+        explanation: "The tool changes Git, not the cluster."
+      - id: b
+        text: "It patches the live Deployment and leaves Git alone."
+        explanation: "That causes drift."
+      - id: c
+        text: "It deletes the old tag from the registry."
+        explanation: "It does not do that."
+      - id: d
+        text: "It disables the agent while it works."
+        explanation: "It does not."
+    correct_option: a
+    explanation: "Correct. The tool changes Git, not the cluster."
+  - id: ats065-final-q41
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Use the in-cluster destination"
+    source_readings:
+      - sections/section-030/module-03/course-01-registering-clusters.md
+    prompt: |-
+      Which destination server address means the cluster where Argo CD runs?
+    options:
+      - id: a
+        text: "`https://localhost:8080`"
+        explanation: "This is not the cluster API address."
+      - id: b
+        text: "`https://kubernetes.default.svc`"
+        explanation: "This is the in-cluster API server address. It needs no stored credential."
+      - id: c
+        text: "`https://argocd.example.com`"
+        explanation: "This is a made-up host."
+      - id: d
+        text: "`https://git.example.com`"
+        explanation: "This is a Git host."
+    correct_option: b
+    explanation: "Correct. This is the in-cluster API server address. It needs no stored credential."
+  - id: ats065-final-q42
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Limit a team with a project"
+    source_readings:
+      - sections/section-030/module-03/course-03-projects-and-tenant-boundaries.md
+    prompt: |-
+      Which AppProject setting prevents a team from creating cluster roles and namespaces through its applications?
+    options:
+      - id: a
+        text: "`sourceRepos: ['*']`"
+        explanation: "This allows every repository."
+      - id: b
+        text: "`description: team`"
+        explanation: "A description limits nothing."
+      - id: c
+        text: "An empty `clusterResourceWhitelist`."
+        explanation: "An empty list allows no cluster-scoped kinds."
+      - id: d
+        text: "`destinations: []` in the default project"
+        explanation: "The default project is open."
+    correct_option: c
+    explanation: "Correct. An empty list allows no cluster-scoped kinds."
+  - id: ats065-final-q43
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Describe an ApplicationSet"
+    source_readings:
+      - sections/section-040/module-03/course-01-applicationsets-and-generators.md
+    prompt: |-
+      What does an ApplicationSet do?
+    options:
+      - id: a
+        text: "It replaces the Git repository."
+        explanation: "It reads a repository."
+      - id: b
+        text: "It syncs one Application faster."
+        explanation: "It generates Applications."
+      - id: c
+        text: "It stores secrets."
+        explanation: "It does not."
+      - id: d
+        text: "It renders a template once per set of parameters from a generator and owns the resulting Application objects."
+        explanation: "The set creates and maintains Applications from data."
+    correct_option: d
+    explanation: "Correct. The set creates and maintains Applications from data."
+  - id: ats065-final-q44
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Shard the controller"
+    source_readings:
+      - sections/section-040/module-03/course-03-controlling-reconciliation-load.md
+    prompt: |-
+      Which setting must match the replica count when the application controller is sharded?
+    options:
+      - id: a
+        text: "The environment variable `ARGOCD_CONTROLLER_REPLICAS`."
+        explanation: "Each replica needs the total count to know its share of clusters."
+      - id: b
+        text: "`PruneLast=true`"
+        explanation: "This is a sync option."
+      - id: c
+        text: "`targetRevision`"
+        explanation: "This is a source field."
+      - id: d
+        text: "`spec.project`"
+        explanation: "This is an Application field."
+    correct_option: a
+    explanation: "Correct. Each replica needs the total count to know its share of clusters."

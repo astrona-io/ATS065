@@ -23,6 +23,7 @@ You should know what a Git commit, a branch and a tag are, and how `git log` and
 1. Commits, Branches And Tags
 2. Pinning, Rollback And Audit
 3. Promotion, Immutable Artifacts And Secrets
-4. Summary
+4. Keeping The History Safe
+5. Summary
 
 <!-- astrona:playground -->

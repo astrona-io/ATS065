@@ -1,0 +1,92 @@
+# yaml-language-server: $schema=https://cli.astrona.io/schema/lab-config.schema.json
+#
+# Restrict A Team With An AppProject (LAB). Section 030.
+# Argo CD 3.5.4 and an in-cluster Gitea server (plumbing only). Built untested.
+apiVersion: astrona.io/v1
+metadata:
+  name: ats-065-lab-030-03
+  docs:
+    prerequisites: prerequisites.md
+    question: question.md
+    solution: solution.md
+
+runtime:
+  type: kind
+  kind:
+    image: kindest/node:v1.35.8
+    preloadImages:
+      - curlimages/curl:8.22.0
+      - ghcr.io/stefanprodan/podinfo:6.15.0
+      - ghcr.io/stefanprodan/podinfo:6.14.0
+      - gitea/gitea:28.1.0-rootless
+      - quay.io/argoproj/argocd:v3.5.4
+      - public.ecr.aws/docker/library/redis:8.2.3-alpine
+  portForwards:
+    - name: argocd
+      description: "Argo CD API server and web page"
+      namespace: argocd
+      resource: svc/argocd-server
+      targetPort: 443
+      hostPort: 8080
+      scheme: https
+    - name: gitea
+      description: "The Git server (git over HTTP)"
+      namespace: gitea
+      resource: svc/gitea-http
+      targetPort: 3000
+      hostPort: 3000
+      scheme: http
+
+bootstrap:
+  manifests:
+    - name: lab-start
+      type: file
+      source: manifests/lab-start.yaml
+  init:
+    - name: install-gitea
+      description: "Starts the in-cluster Git server"
+      type: file
+      source: bootstrap/01-install-gitea.sh
+    - name: install-argocd
+      description: "Installs Argo CD 3.5.4 (non-HA, without Dex and notifications)"
+      type: file
+      source: bootstrap/02-install-argocd.sh
+    - name: seed
+      description: "Pushes the repositories into Git"
+      type: file
+      source: bootstrap/03-seed.sh
+    - name: create-application
+      description: "Creates the Application in the default project"
+      type: file
+      source: bootstrap/04-create-application.sh
+  waitFor:
+    - resource: deploy/shuttle
+      namespace: starfleet
+
+testing:
+  init:
+    - name: solution
+      description: Reference solution applied by `astrona test`
+      type: file
+      source: solution/apply.sh
+
+validation:
+  scripts:
+    - name: project
+      description: "The AppProject team-scout allows one repository, one destination and no cluster kinds"
+      type: file
+      source: validation/validate-project.sh
+      hint: "Create the AppProject team-scout in the namespace argocd. Set clusterResourceWhitelist to an empty list."
+    - name: application
+      description: "scout-staging belongs to team-scout and is Synced and Healthy"
+      type: file
+      source: validation/validate-application.sh
+      hint: "Patch spec.project of the Application to team-scout. If you tested another namespace, set the destination back to starfleet-staging."
+    - name: boundary
+      description: "The project does not allow starfleet-production and the staging service still answers"
+      type: file
+      source: validation/validate-boundary.sh
+      hint: "List only starfleet-staging as a destination and the scout repository as the source. Do not use wildcards."
+
+teardown:
+  keepCluster: false

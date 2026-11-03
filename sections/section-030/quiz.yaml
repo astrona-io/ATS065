@@ -8,7 +8,7 @@ provenance: Original practice material written for this course; not official exa
 scope:
   type: section
   id: section-030
-  title: "Pull, Credentials, Agents And Webhooks"
+  title: "Pull, Credentials, Agents, Tenancy And Webhooks"
 questions:
   - id: ats065-030-q01
     type: single_choice
@@ -447,3 +447,164 @@ questions:
         explanation: "It controls image pulls."
     correct_option: b
     explanation: "Correct. A project restricts source repositories, destinations and resource kinds."
+  - id: ats065-030-q20
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Compare three revisions"
+    source_readings:
+      - sections/section-030/module-01/course-04-verify-what-was-pulled.md
+    prompt: |-
+      The compared revision of an Application is older than the head of the branch. What does this suggest?
+    options:
+      - id: a
+        text: "The fetch is late or failing, so the credentials, network and repository conditions should be checked."
+        explanation: "The agent has not seen the newest commit yet."
+      - id: b
+        text: "The cluster is ahead of Git."
+        explanation: "The compared revision is the one the agent last read."
+      - id: c
+        text: "The application is Healthy, so nothing needs a check."
+        explanation: "Health and revision are different things."
+      - id: d
+        text: "Git lost the commit."
+        explanation: "A late fetch is far more likely."
+    correct_option: a
+    explanation: "Correct. The agent has not seen the newest commit yet."
+  - id: ats065-030-q21
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Use the in-cluster destination"
+    source_readings:
+      - sections/section-030/module-03/course-01-registering-clusters.md
+    prompt: |-
+      Which destination server address means the cluster where Argo CD runs?
+    options:
+      - id: a
+        text: "`https://localhost:8080`"
+        explanation: "This is not the cluster API address."
+      - id: b
+        text: "`https://kubernetes.default.svc`"
+        explanation: "This is the in-cluster API server address. It needs no stored credential."
+      - id: c
+        text: "`https://argocd.example.com`"
+        explanation: "This is a made-up host."
+      - id: d
+        text: "`https://git.example.com`"
+        explanation: "This is a Git host."
+    correct_option: b
+    explanation: "Correct. This is the in-cluster API server address. It needs no stored credential."
+  - id: ats065-030-q22
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "State what a cluster credential grants"
+    source_readings:
+      - sections/section-030/module-03/course-01-registering-clusters.md
+    prompt: |-
+      What decides what Argo CD may change in a remote cluster that is registered with it?
+    options:
+      - id: a
+        text: "The name of the Application."
+        explanation: "The name does not grant rights."
+      - id: b
+        text: "The color theme of the UI."
+        explanation: "It does not."
+      - id: c
+        text: "The permissions of the credential stored in the cluster Secret."
+        explanation: "The service account or token in the Secret carries the rights."
+      - id: d
+        text: "The Git branch name."
+        explanation: "It does not."
+    correct_option: c
+    explanation: "Correct. The service account or token in the Secret carries the rights."
+  - id: ats065-030-q23
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Compare topologies"
+    source_readings:
+      - sections/section-030/module-03/course-02-hub-and-agent-topologies.md
+    prompt: |-
+      What is a trade-off of one central Argo CD managing many clusters?
+    options:
+      - id: a
+        text: "It needs no credentials at all."
+        explanation: "It stores credentials for each cluster."
+      - id: b
+        text: "It removes the need for Git."
+        explanation: "Git is still the source."
+      - id: c
+        text: "Each cluster pulls on its own."
+        explanation: "That describes standalone agents."
+      - id: d
+        text: "It gives a single view, and it holds credentials for every cluster and needs access to their API servers."
+        explanation: "Central control concentrates both convenience and risk."
+    correct_option: d
+    explanation: "Correct. Central control concentrates both convenience and risk."
+  - id: ats065-030-q24
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Limit a team with a project"
+    source_readings:
+      - sections/section-030/module-03/course-03-projects-and-tenant-boundaries.md
+    prompt: |-
+      Which AppProject setting prevents a team from creating cluster roles and namespaces through its applications?
+    options:
+      - id: a
+        text: "An empty `clusterResourceWhitelist`."
+        explanation: "An empty list allows no cluster-scoped kinds."
+      - id: b
+        text: "`sourceRepos: ['*']`"
+        explanation: "This allows every repository."
+      - id: c
+        text: "`description: team`"
+        explanation: "A description limits nothing."
+      - id: d
+        text: "`destinations: []` in the default project"
+        explanation: "The default project is open."
+    correct_option: a
+    explanation: "Correct. An empty list allows no cluster-scoped kinds."
+  - id: ats065-030-q25
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Know the limit of a project"
+    source_readings:
+      - sections/section-030/module-03/course-03-projects-and-tenant-boundaries.md
+    prompt: |-
+      Why is an AppProject alone not enough to isolate two teams at runtime?
+    options:
+      - id: a
+        text: "Projects are only labels."
+        explanation: "They are enforced during sync."
+      - id: b
+        text: "A project checks what an Application asks for. Runtime isolation needs Kubernetes controls such as quotas, network policies and pod security."
+        explanation: "The project governs delivery, not what pods can do."
+      - id: c
+        text: "Projects delete namespaces."
+        explanation: "They do not."
+      - id: d
+        text: "Projects change the container runtime."
+        explanation: "They do not."
+    correct_option: b
+    explanation: "Correct. The project governs delivery, not what pods can do."
+  - id: ats065-030-q26
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Verify signatures"
+    source_readings:
+      - sections/section-030/module-03/course-04-trusting-the-source.md
+    prompt: |-
+      Which Flux setting makes the source controller refuse a Git revision that is not signed by a trusted key?
+    options:
+      - id: a
+        text: "`spec.interval` of the Kustomization."
+        explanation: "It sets a timing."
+      - id: b
+        text: "`spec.suspend` of the HelmRelease."
+        explanation: "It pauses a release."
+      - id: c
+        text: "The `spec.verify` section of the `GitRepository`."
+        explanation: "The controller verifies the signature and does not publish a revision that fails."
+      - id: d
+        text: "`metadata.labels` of the namespace."
+        explanation: "Labels do not verify signatures."
+    correct_option: c
+    explanation: "Correct. The controller verifies the signature and does not publish a revision that fails."

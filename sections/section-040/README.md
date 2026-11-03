@@ -4,7 +4,7 @@ exam_objectives:
 ---
 # Continuously Reconciled
 
-This section covers the CGOA objective Continuously Reconciled. It has two modules, Drift, Refresh And Reconciliation and Health, Sync Status And Feedback Loops, each with a playground and a graded lab, plus a capstone lab and a quiz. Argo CD is the reconciler and an in-cluster Gitea server is plumbing only. The labs and playgrounds were built without being run.
+This section covers the CGOA objective Continuously Reconciled. It has three modules, Drift, Refresh And Reconciliation, Health, Sync Status And Feedback Loops and Reconciliation At Scale, each with a playground and a graded lab, plus a capstone lab and a quiz. Argo CD is the reconciler and an in-cluster Gitea server is plumbing only. The labs and playgrounds were built without being run.
 
 Read each module in order: the landing page, the parts and the summary. Each graded lab follows the part that prepares it, and the capstone closes the section. The quiz comes last.
 
@@ -18,3 +18,5 @@ Read each module in order: the landing page, the parts and the summary. Each gra
 - Order a sync with phases, hooks and waves.
 - Configure retries with exponential backoff.
 - Find the cause of a failure in conditions, events, logs and metrics.
+- Generate Applications with an ApplicationSet and bootstrap with app of apps.
+- Control reconciliation load and order a rollout across environments.

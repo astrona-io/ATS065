@@ -8,7 +8,7 @@ provenance: Original practice material written for this course; not official exa
 scope:
   type: section
   id: section-020
-  title: "Versions, References, Audit And Promotion"
+  title: "Versions, References, Releases, Audit And Promotion"
 questions:
   - id: ats065-020-q01
     type: single_choice
@@ -447,3 +447,141 @@ questions:
         explanation: "This rewrites published commits."
     correct_option: b
     explanation: "Correct. A revert adds a new commit that undoes the change, so the record of both stays."
+  - id: ats065-020-q20
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Protect the history"
+    source_readings:
+      - sections/section-020/module-01/course-04-keeping-the-history-safe.md
+    prompt: |-
+      Which setting best protects the deployment history on the shared Git host?
+    options:
+      - id: a
+        text: "Block force pushes and deletion of the followed branch, and keep a copy of the repository elsewhere."
+        explanation: "History is the record of the deployment, so it needs both protection and a backup."
+      - id: b
+        text: "Allow force pushes so mistakes can be hidden quickly."
+        explanation: "Force pushes rewrite history."
+      - id: c
+        text: "Keep the only copy on one laptop."
+        explanation: "This is a single point of failure."
+      - id: d
+        text: "Delete old tags to save space."
+        explanation: "Old tags are part of the record."
+    correct_option: a
+    explanation: "Correct. History is the record of the deployment, so it needs both protection and a backup."
+  - id: ats065-020-q21
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Choose a version scheme"
+    source_readings:
+      - sections/section-020/module-03/course-01-versioning-schemes-and-identifiers.md
+    prompt: |-
+      A release identifier must tell a reader whether an upgrade may break users. Which scheme does that?
+    options:
+      - id: a
+        text: "A timestamp, which orders releases and says nothing about compatibility."
+        explanation: "A timestamp does not carry compatibility."
+      - id: b
+        text: "Semantic versioning, where the major number changes for incompatible changes."
+        explanation: "The parts of a semantic version carry the compatibility meaning."
+      - id: c
+        text: "The word latest."
+        explanation: "It points to a moving image."
+      - id: d
+        text: "A random string."
+        explanation: "It carries no meaning."
+    correct_option: b
+    explanation: "Correct. The parts of a semantic version carry the compatibility meaning."
+  - id: ats065-020-q22
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Name the immutable identifier"
+    source_readings:
+      - sections/section-020/module-03/course-01-versioning-schemes-and-identifiers.md
+    prompt: |-
+      Which image reference stays the same content over time?
+    options:
+      - id: a
+        text: "A tag such as `1.0`."
+        explanation: "A tag can be moved to other content."
+      - id: b
+        text: "The tag `latest`."
+        explanation: "`latest` is a moving tag."
+      - id: c
+        text: "A reference by digest, such as `image@sha256:...`."
+        explanation: "A digest names the exact content. Tags can be moved."
+      - id: d
+        text: "A branch name."
+        explanation: "A branch moves with each commit."
+    correct_option: c
+    explanation: "Correct. A digest names the exact content. Tags can be moved."
+  - id: ats065-020-q23
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Place the declared-state commit"
+    source_readings:
+      - sections/section-020/module-03/course-02-from-build-to-declared-state.md
+    prompt: |-
+      A pipeline builds an image. How does the new image reach the cluster in a GitOps flow?
+    options:
+      - id: a
+        text: "The pipeline runs `kubectl set image` on the cluster."
+        explanation: "That is a push that bypasses Git."
+      - id: b
+        text: "The cluster watches the build server directly."
+        explanation: "The agent reads the declared state in Git."
+      - id: c
+        text: "Developers edit the Deployment by hand in the cluster."
+        explanation: "This leaves no record in Git."
+      - id: d
+        text: "The pipeline or a bot commits the new image reference to the configuration repository, and the agent pulls that commit."
+        explanation: "The commit is the deployment record."
+    correct_option: d
+    explanation: "Correct. The commit is the deployment record."
+  - id: ats065-020-q24
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain image update automation"
+    source_readings:
+      - sections/section-020/module-03/course-03-image-update-automation.md
+    prompt: |-
+      How does image update automation keep Git as the source of truth?
+    options:
+      - id: a
+        text: "It writes the new tag as a commit to the repository, so the update has history and can be reverted."
+        explanation: "The tool changes Git, not the cluster."
+      - id: b
+        text: "It patches the live Deployment and leaves Git alone."
+        explanation: "That causes drift."
+      - id: c
+        text: "It deletes the old tag from the registry."
+        explanation: "It does not do that."
+      - id: d
+        text: "It disables the agent while it works."
+        explanation: "It does not."
+    correct_option: a
+    explanation: "Correct. The tool changes Git, not the cluster."
+  - id: ats065-020-q25
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Choose revert over reset"
+    source_readings:
+      - sections/section-020/module-03/course-04-rolling-back-safely.md
+    prompt: |-
+      A bad release is on `main` and the team shares the branch. Which rollback keeps the history?
+    options:
+      - id: a
+        text: "`git reset --hard` and a force push."
+        explanation: "This rewrites shared history."
+      - id: b
+        text: "`git revert` of the bad commit, which adds a new commit that undoes it."
+        explanation: "A revert is a normal commit that the agent pulls."
+      - id: c
+        text: "Deleting the repository and starting again."
+        explanation: "This destroys the record."
+      - id: d
+        text: "Editing the live objects by hand."
+        explanation: "This leaves Git different from the cluster."
+    correct_option: b
+    explanation: "Correct. A revert is a normal commit that the agent pulls."

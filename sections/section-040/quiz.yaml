@@ -8,7 +8,7 @@ provenance: Original practice material written for this course; not official exa
 scope:
   type: section
   id: section-040
-  title: "Drift, Refresh, Health And Reconciliation"
+  title: "Drift, Refresh, Health, Scale And Reconciliation"
 questions:
   - id: ats065-040-q01
     type: single_choice
@@ -447,3 +447,164 @@ questions:
         explanation: "Unknown is a failure to compare."
     correct_option: b
     explanation: "Correct. Comparison errors come from fetching or rendering the desired state."
+  - id: ats065-040-q20
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Use PruneLast"
+    source_readings:
+      - sections/section-040/module-01/course-04-sync-options-and-sync-windows.md
+    prompt: |-
+      What does the sync option `PruneLast=true` do?
+    options:
+      - id: a
+        text: "It deletes pruned objects after the other objects are synced and healthy."
+        explanation: "Deletion is ordered after the rest of the sync."
+      - id: b
+        text: "It prunes before anything else."
+        explanation: "The option moves pruning to the end."
+      - id: c
+        text: "It disables pruning."
+        explanation: "Pruning still happens."
+      - id: d
+        text: "It prunes only namespaces."
+        explanation: "It applies to pruned objects of any kind."
+    correct_option: a
+    explanation: "Correct. Deletion is ordered after the rest of the sync."
+  - id: ats065-040-q21
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Describe an ApplicationSet"
+    source_readings:
+      - sections/section-040/module-03/course-01-applicationsets-and-generators.md
+    prompt: |-
+      What does an ApplicationSet do?
+    options:
+      - id: a
+        text: "It replaces the Git repository."
+        explanation: "It reads a repository."
+      - id: b
+        text: "It renders a template once per set of parameters from a generator and owns the resulting Application objects."
+        explanation: "The set creates and maintains Applications from data."
+      - id: c
+        text: "It syncs one Application faster."
+        explanation: "It generates Applications."
+      - id: d
+        text: "It stores secrets."
+        explanation: "It does not."
+    correct_option: b
+    explanation: "Correct. The set creates and maintains Applications from data."
+  - id: ats065-040-q22
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Pick a generator"
+    source_readings:
+      - sections/section-040/module-03/course-01-applicationsets-and-generators.md
+    prompt: |-
+      A new folder under `overlays` should create a new Application with no change to the ApplicationSet. Which generator fits?
+    options:
+      - id: a
+        text: "The list generator."
+        explanation: "The list is fixed in the manifest."
+      - id: b
+        text: "The pullRequest generator."
+        explanation: "It follows open pull requests."
+      - id: c
+        text: "The git generator with directories."
+        explanation: "It creates one element per folder."
+      - id: d
+        text: "No generator can do this."
+        explanation: "The git directory generator does."
+    correct_option: c
+    explanation: "Correct. It creates one element per folder."
+  - id: ats065-040-q23
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Describe app of apps"
+    source_readings:
+      - sections/section-040/module-03/course-02-app-of-apps-and-bootstrapping.md
+    prompt: |-
+      In the app-of-apps pattern, what does the root Application point at?
+    options:
+      - id: a
+        text: "A folder of container images."
+        explanation: "Images are not manifests."
+      - id: b
+        text: "The kube-system namespace."
+        explanation: "Applications live in argocd."
+      - id: c
+        text: "The Git server database."
+        explanation: "It does not read it."
+      - id: d
+        text: "A folder of manifests that are themselves Application objects, in the `argocd` namespace."
+        explanation: "Children are declared as files and the root delivers them."
+    correct_option: d
+    explanation: "Correct. Children are declared as files and the root delivers them."
+  - id: ats065-040-q24
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Shard the controller"
+    source_readings:
+      - sections/section-040/module-03/course-03-controlling-reconciliation-load.md
+    prompt: |-
+      Which setting must match the replica count when the application controller is sharded?
+    options:
+      - id: a
+        text: "The environment variable `ARGOCD_CONTROLLER_REPLICAS`."
+        explanation: "Each replica needs the total count to know its share of clusters."
+      - id: b
+        text: "`PruneLast=true`"
+        explanation: "This is a sync option."
+      - id: c
+        text: "`targetRevision`"
+        explanation: "This is a source field."
+      - id: d
+        text: "`spec.project`"
+        explanation: "This is an Application field."
+    correct_option: a
+    explanation: "Correct. Each replica needs the total count to know its share of clusters."
+  - id: ats065-040-q25
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Avoid re-rendering"
+    source_readings:
+      - sections/section-040/module-03/course-03-controlling-reconciliation-load.md
+    prompt: |-
+      What does the annotation `argocd.argoproj.io/manifest-generate-paths` do?
+    options:
+      - id: a
+        text: "It signs the commit."
+        explanation: "It does not sign."
+      - id: b
+        text: "It lists the paths whose changes require re-rendering, so unrelated commits in a monorepo reuse cached manifests."
+        explanation: "It reduces repository server work."
+      - id: c
+        text: "It selects the cluster."
+        explanation: "It lists paths."
+      - id: d
+        text: "It deletes cached secrets."
+        explanation: "It does not."
+    correct_option: b
+    explanation: "Correct. It reduces repository server work."
+  - id: ats065-040-q26
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "State the status of progressive sync"
+    source_readings:
+      - sections/section-040/module-03/course-04-progressive-rollouts-across-environments.md
+    prompt: |-
+      What is the status of progressive sync (`RollingSync`) in an ApplicationSet?
+    options:
+      - id: a
+        text: "It is stable and always on."
+        explanation: "It is alpha."
+      - id: b
+        text: "It was removed."
+        explanation: "It exists as alpha."
+      - id: c
+        text: "It is an alpha feature and is off by default, so it must be enabled and its fields may change."
+        explanation: "The feature needs to be enabled in the controller."
+      - id: d
+        text: "It only works with Flux."
+        explanation: "It belongs to the ApplicationSet."
+    correct_option: c
+    explanation: "Correct. The feature needs to be enabled in the controller."

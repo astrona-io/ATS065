@@ -4,7 +4,7 @@ exam_objectives:
 ---
 # Pulled Automatically
 
-This section covers the CGOA objective Pulled Automatically. It has two modules, Pull, Credentials And Webhooks and The In-Cluster Agent And Pull Mechanics, each with a playground and a graded lab, plus a capstone lab and a quiz. Argo CD is the reconciler and an in-cluster Gitea server is plumbing only. The labs and playgrounds were built without being run.
+This section covers the CGOA objective Pulled Automatically. It has three modules, Pull, Credentials And Webhooks, The In-Cluster Agent And Pull Mechanics and Multi-Cluster Pull And Tenancy, each with a playground and a graded lab, plus a capstone lab and a quiz. Argo CD is the reconciler and an in-cluster Gitea server is plumbing only. The labs and playgrounds were built without being run.
 
 Read each module in order: the landing page, the parts and the summary. Each graded lab follows the part that prepares it, and the capstone closes the section. The quiz comes last.
 
@@ -17,3 +17,5 @@ Read each module in order: the landing page, the parts and the summary. Each gra
 - Name the Argo CD components and the Flux controllers and their roles.
 - Explain network direction and where credentials live in a pull design.
 - Read the permissions of the agent and narrow them with a project.
+- Register clusters and compare hub, standalone and agent topologies.
+- Limit a team with an AppProject and verify the source that the agent trusts.

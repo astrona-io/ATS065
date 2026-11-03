@@ -23,6 +23,7 @@ You should know what a Kubernetes Secret and a Service are, and what an HTTP req
 1. Push Versus Pull
 2. Repository Credentials
 3. Polling, Webhooks And Outages
-4. Summary
+4. Verifying What Was Pulled
+5. Summary
 
 <!-- astrona:playground -->

@@ -23,6 +23,7 @@ You should know what an `Application`, a Deployment and a commit are. The hands-
 1. Drift And Refresh
 2. Automated Sync, Self-Heal And Prune
 3. Ignore Rules And Reconciliation Patterns
-4. Summary
+4. Sync Options And Sync Windows
+5. Summary
 
 <!-- astrona:playground -->
