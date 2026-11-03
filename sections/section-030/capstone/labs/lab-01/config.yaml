@@ -1,0 +1,93 @@
+# yaml-language-server: $schema=https://cli.astrona.io/schema/lab-config.schema.json
+#
+# Capstone: Pull, Notify And Change Through Git (LAB). Section 030.
+# Argo CD 3.5.4 and an in-cluster Gitea server (plumbing only). Built untested.
+apiVersion: astrona.io/v1
+metadata:
+  name: ats-065-capstone-030
+  docs:
+    prerequisites: prerequisites.md
+    question: question.md
+    solution: solution.md
+
+runtime:
+  type: kind
+  kind:
+    image: kindest/node:v1.35.8
+    preloadImages:
+      - curlimages/curl:8.22.0
+      - ghcr.io/stefanprodan/podinfo:6.15.0
+      - ghcr.io/stefanprodan/podinfo:6.14.0
+      - gitea/gitea:28.1.0-rootless
+      - quay.io/argoproj/argocd:v3.5.4
+      - public.ecr.aws/docker/library/redis:8.2.3-alpine
+  portForwards:
+    - name: argocd
+      description: "Argo CD API server and web page"
+      namespace: argocd
+      resource: svc/argocd-server
+      targetPort: 443
+      hostPort: 8080
+      scheme: https
+    - name: gitea
+      description: "The Git server (git over HTTP)"
+      namespace: gitea
+      resource: svc/gitea-http
+      targetPort: 3000
+      hostPort: 3000
+      scheme: http
+
+bootstrap:
+  manifests:
+    - name: lab-start
+      type: file
+      source: manifests/lab-start.yaml
+  init:
+    - name: install-gitea
+      description: "Starts the in-cluster Git server"
+      type: file
+      source: bootstrap/01-install-gitea.sh
+    - name: install-argocd
+      description: "Installs Argo CD 3.5.4 (non-HA, without Dex and notifications)"
+      type: file
+      source: bootstrap/02-install-argocd.sh
+    - name: seed
+      description: "Pushes the repositories into Git"
+      type: file
+      source: bootstrap/03-seed.sh
+  waitFor:
+    - resource: deploy/shuttle
+      namespace: starfleet
+
+testing:
+  init:
+    - name: solution
+      description: Reference solution applied by `astrona test`
+      type: file
+      source: solution/apply.sh
+
+validation:
+  scripts:
+    - name: repository-secret
+      description: "Argo CD reads the private repository with the read-only user argocd-reader"
+      type: file
+      source: validation/validate-repository-secret.sh
+      hint: "Create the repository Secret with the user argocd-reader. Do not use the write user platform."
+    - name: application
+      description: "scout-production pulls overlays/production from main into the same cluster"
+      type: file
+      source: validation/validate-application.sh
+      hint: "Use the in-cluster API server https://kubernetes.default.svc. Do not register a cluster Secret."
+    - name: webhook
+      description: "The Git server has an active push webhook to the Argo CD webhook endpoint"
+      type: file
+      source: validation/validate-webhook.sh
+      hint: "Create the webhook in the Gitea repository settings or with the Gitea API. The URL is https://argocd-server.argocd.svc/api/webhook with content type JSON and the push event."
+    - name: pulled-change
+      description: "Production runs 3 replicas from a Git commit that Argo CD pulled"
+      type: file
+      source: validation/validate-pulled-change.sh
+      hint: "Change the replica count in the production overlay, commit and push. Do not scale the live Deployment."
+
+teardown:
+  keepCluster: false

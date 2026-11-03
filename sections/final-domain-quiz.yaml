@@ -1,0 +1,288 @@
+schema_version: 1
+kind: question_bank
+id: ats065-final
+course_id: ATS065
+exam_code: CGOA
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: domain
+  id: cgoa-gitops-principles
+  title: "CGOA GitOps Principles"
+questions:
+  - id: ats065-final-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Name the GitOps principles"
+    source_readings:
+      - sections/section-010/module-01/course-01-desired-state-versus-imperative-steps.md
+    prompt: |-
+      Which list names the four GitOps principles?
+    options:
+      - id: a
+        text: "Declarative, versioned and immutable, pulled automatically, continuously reconciled."
+        explanation: "Correct."
+      - id: b
+        text: "Imperative, mutable, pushed manually, reconciled once."
+        explanation: "These are the opposite of the principles."
+      - id: c
+        text: "Declarative, pushed by CI, applied once, audited yearly."
+        explanation: "Pull and continuous reconciliation are the principles."
+      - id: d
+        text: "Scripted, branched, tagged, released."
+        explanation: "These are version control terms, not the principles."
+    correct_option: a
+    explanation: "Correct."
+  - id: ats065-final-q02
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Describe the reconciliation loop"
+    source_readings:
+      - sections/section-010/module-01/course-03-controllers-ownership-and-pruning.md
+    prompt: |-
+      What does a controller in a reconciliation loop do?
+    options:
+      - id: a
+        text: "Waits for a person to run `kubectl apply`."
+        explanation: "The loop does not wait for that."
+      - id: b
+        text: "Reads desired state, reads actual state and acts on the difference, then repeats."
+        explanation: "Correct."
+      - id: c
+        text: "Runs a deployment script once at install time."
+        explanation: "A loop repeats."
+      - id: d
+        text: "Writes live state back to Git."
+        explanation: "Git is the source of desired state."
+    correct_option: b
+    explanation: "Correct."
+  - id: ats065-final-q03
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain the pull model"
+    source_readings:
+      - sections/section-030/module-01/course-01-push-versus-pull.md
+    prompt: |-
+      Why does pull delivery reduce the exposure of cluster credentials?
+    options:
+      - id: a
+        text: "Pull delivery encrypts the cluster."
+        explanation: "It does not encrypt anything by itself."
+      - id: b
+        text: "Pull delivery blocks every outbound connection."
+        explanation: "It needs outbound access to the repository."
+      - id: c
+        text: "The agent runs in the cluster, so no external system needs a credential that can change it."
+        explanation: "Correct."
+      - id: d
+        text: "Pull delivery needs no credentials at all."
+        explanation: "A read credential for the repository is still needed."
+    correct_option: c
+    explanation: "Correct."
+  - id: ats065-final-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain versioned and immutable state"
+    source_readings:
+      - sections/section-020/module-01/course-02-pinning-rollback-and-audit.md
+    prompt: |-
+      How does a team return to a previous release while keeping the audit trail?
+    options:
+      - id: a
+        text: "Force-push over the history to remove the bad commit."
+        explanation: "This destroys the audit trail."
+      - id: b
+        text: "Edit the live objects with `kubectl`."
+        explanation: "Git is not changed."
+      - id: c
+        text: "Delete the repository and create a new one."
+        explanation: "This loses the history."
+      - id: d
+        text: "Revert the commit and push, so a new commit states the earlier content."
+        explanation: "Correct."
+    correct_option: d
+    explanation: "Correct."
+  - id: ats065-final-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain immutable artifacts in promotion"
+    source_readings:
+      - sections/section-020/module-01/course-03-promotion-immutable-artifacts-and-secrets.md
+    prompt: |-
+      What should move between environments during promotion?
+    options:
+      - id: a
+        text: "The same immutable image reference, by a reviewed change to the environment declaration."
+        explanation: "Correct."
+      - id: b
+        text: "A new image built for each environment."
+        explanation: "The tested artifact would not be the one deployed."
+      - id: c
+        text: "A mutable tag such as `latest`."
+        explanation: "The content behind the tag can change."
+      - id: d
+        text: "A copy of the cluster state."
+        explanation: "Promotion changes the declaration."
+    correct_option: a
+    explanation: "Correct."
+  - id: ats065-final-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain the polling interval and webhooks"
+    source_readings:
+      - sections/section-030/module-01/course-03-polling-webhooks-and-outages.md
+    prompt: |-
+      What is the relation between polling and a webhook?
+    options:
+      - id: a
+        text: "A webhook applies manifests directly."
+        explanation: "It only signals a change."
+      - id: b
+        text: "A webhook shortens the delay, and polling remains the fallback."
+        explanation: "Correct."
+      - id: c
+        text: "A webhook replaces the repository credential."
+        explanation: "The credential is still needed."
+      - id: d
+        text: "Polling is required only when a webhook is set."
+        explanation: "Polling works without a webhook."
+    correct_option: b
+    explanation: "Correct."
+  - id: ats065-final-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Define drift and the default behaviour"
+    source_readings:
+      - sections/section-040/module-01/course-01-drift-and-refresh.md
+    prompt: |-
+      A live edit differs from Git and the `Application` has no automated sync. What does Argo CD do?
+    options:
+      - id: a
+        text: "It deletes the Application."
+        explanation: "It does not."
+      - id: b
+        text: "It commits the live state to Git."
+        explanation: "Argo CD does not write to Git."
+      - id: c
+        text: "It shows `OutOfSync` and waits for a sync."
+        explanation: "Correct. Nothing is reverted until a sync runs."
+      - id: d
+        text: "It reverts the edit within seconds."
+        explanation: "That needs automated sync with self-heal."
+    correct_option: c
+    explanation: "Correct. Nothing is reverted until a sync runs."
+  - id: ats065-final-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Configure automated sync fields"
+    source_readings:
+      - sections/section-040/module-01/course-02-automated-sync-self-heal-and-prune.md
+    prompt: |-
+      Which `syncPolicy` makes Argo CD revert live edits and delete removed objects?
+    options:
+      - id: a
+        text: "`automated: {}`"
+        explanation: "Both fields default to false."
+      - id: b
+        text: "`automated: {prune: false, selfHeal: false}`"
+        explanation: "This is the default and neither action happens."
+      - id: c
+        text: "No `syncPolicy`."
+        explanation: "This is manual sync."
+      - id: d
+        text: "`automated: {prune: true, selfHeal: true}`"
+        explanation: "Correct."
+    correct_option: d
+    explanation: "Correct."
+  - id: ats065-final-q09
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain ownership of a shared field"
+    source_readings:
+      - sections/section-010/module-01/course-03-controllers-ownership-and-pruning.md
+    prompt: |-
+      Two controllers write the same field and keep overwriting each other. What is the fix?
+    options:
+      - id: a
+        text: "Name one owner of the field and make the other leave it alone, for example with an ignore rule."
+        explanation: "Correct."
+      - id: b
+        text: "Increase the sync frequency."
+        explanation: "This makes the conflict faster."
+      - id: c
+        text: "Delete both controllers."
+        explanation: "This removes legitimate behaviour."
+      - id: d
+        text: "Disable the API server."
+        explanation: "This stops the cluster."
+    correct_option: a
+    explanation: "Correct."
+  - id: ats065-final-q10
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Reason about the source of truth during an outage"
+    source_readings:
+      - sections/section-030/module-01/course-03-polling-webhooks-and-outages.md
+    prompt: |-
+      The Git server is unreachable. Which statement is correct?
+    options:
+      - id: a
+        text: "Argo CD applies the last cached commit and prunes everything else."
+        explanation: "It does not prune because of an outage."
+      - id: b
+        text: "The workload keeps running, and reconciliation resumes when the repository returns."
+        explanation: "Correct."
+      - id: c
+        text: "The workload is deleted at once."
+        explanation: "Nothing is deleted by an outage."
+      - id: d
+        text: "Argo CD switches to the live state as the source of truth."
+        explanation: "Git stays the source of truth."
+    correct_option: b
+    explanation: "Correct."
+  - id: ats065-final-q11
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Reason about a weak reference"
+    source_readings:
+      - sections/section-020/module-01/course-03-promotion-immutable-artifacts-and-secrets.md
+    prompt: |-
+      Which reference gives the strongest guarantee of what runs?
+    options:
+      - id: a
+        text: "A branch name."
+        explanation: "A branch moves."
+      - id: b
+        text: "The image name without a tag."
+        explanation: "This resolves to `latest`."
+      - id: c
+        text: "An image digest."
+        explanation: "Correct. It identifies exact content."
+      - id: d
+        text: "The tag `latest`."
+        explanation: "The content can change."
+    correct_option: c
+    explanation: "Correct. It identifies exact content."
+  - id: ats065-final-q12
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Reason about rendering and pinning"
+    source_readings:
+      - sections/section-010/module-01/course-01-desired-state-versus-imperative-steps.md
+    prompt: |-
+      Why is a remote Kustomize base on a branch a risk for the declarative principle?
+    options:
+      - id: a
+        text: "Kustomize cannot read remote bases."
+        explanation: "It can."
+      - id: b
+        text: "Remote bases are always slower."
+        explanation: "Speed is not the concern."
+      - id: c
+        text: "Remote bases cannot hold a Deployment."
+        explanation: "They can."
+      - id: d
+        text: "The branch can move, so the rendered state changes without a commit in this repository."
+        explanation: "Correct."
+    correct_option: d
+    explanation: "Correct."

@@ -1,9 +1,24 @@
-# Reading-only content; YAML knowledge checks have a separate index.
+# One entry per section under `modules:`. Each section lists its README, the
+# module landing page (course.md), the parts (course-0N-*.md), the question.md
+# reading and `type: lab` entry right after the part the lab tests, then the
+# module summary, the section capstone and the section quiz. The final domain
+# quiz closes the course. Playgrounds are not listed: the landing page's
+# playground marker shows them. solution.md is never listed.
+#
+# Every `path:` is relative to this file.
+
 training:
   id: ATS065
-  title: 'CGOA: GitOps Principles'
-  description: 'Detailed reading material and reusable YAML knowledge checks for CGOA: GitOps Principles.
-    Technical content remains draft. No labs or playgrounds.'
+  title: "CGOA: GitOps Principles"
+  description: >
+    Training material covering the Certified GitOps Associate (CGOA) GitOps
+    Principles domain: declared state and rendering, versions, references and
+    promotion, pull-based delivery with repository credentials and webhooks,
+    and drift, sync policy and continuous reconciliation. Each section has one
+    module with a playground, a graded lab, a capstone lab and a quiz. Argo CD
+    is the reconciler and an in-cluster Gitea server is plumbing only. Labs and
+    playgrounds are untested.
+
   certification:
     name: Certified GitOps Associate
     code: CGOA
@@ -11,92 +26,317 @@ training:
     domain: GitOps Principles
     weight: 30
     competencies:
-    - Declarative
-    - Versioned and Immutable
-    - Pulled Automatically
-    - Continuously Reconciled
+      - Declarative
+      - Versioned and Immutable
+      - Pulled Automatically
+      - Continuously Reconciled
+
 modules:
-- id: module-intro
-  title: Introduction
-  description: Audience, reading method and review process.
-  content:
-  - type: reading
+  - id: module-intro
     title: Introduction
-    path: sections/intro/README.md
-  - type: reading
-    title: Welcome To The Course
-    path: sections/intro/course-01-welcome.md
-  - type: reading
-    title: Get Your Machine Ready
-    path: sections/intro/course-02-get-your-machine-ready.md
-  - type: reading
-    title: How This Course Is Made
-    path: sections/intro/course-03-how-this-course-is-made.md
-- id: module-010
-  title: Declarative
-  description: Developed reading and reasoning for Declarative.
-  maturity: alpha
-  content:
-  - type: reading
-    title: Declarative
-    path: sections/section-010/README.md
-  - type: reading
-    title: Sufficient Intent, Rendering And Controller Contracts
-    path: sections/section-010/module-01/course.md
-  - type: reading
-    title: Sufficient Intent, Rendering And Controller Contracts
-    path: sections/section-010/module-01/course-01-sufficient-intent-rendering-and-controller-contracts.md
-  - type: reading
-    title: Summary
-    path: sections/section-010/module-01/course-02-summary.md
-- id: module-020
-  title: Versioned and Immutable
-  description: Developed reading and reasoning for Versioned and Immutable.
-  maturity: alpha
-  content:
-  - type: reading
-    title: Versioned and Immutable
-    path: sections/section-020/README.md
-  - type: reading
-    title: Immutable Versions, Moving References And Auditable Promotion
-    path: sections/section-020/module-01/course.md
-  - type: reading
-    title: Immutable Versions, Moving References And Auditable Promotion
-    path: sections/section-020/module-01/course-01-immutable-versions-moving-references-and-auditable-promotion.md
-  - type: reading
-    title: Summary
-    path: sections/section-020/module-01/course-02-summary.md
-- id: module-030
-  title: Pulled Automatically
-  description: Developed reading and reasoning for Pulled Automatically.
-  maturity: alpha
-  content:
-  - type: reading
-    title: Pulled Automatically
-    path: sections/section-030/README.md
-  - type: reading
-    title: Agent-Owned Retrieval And Event-Accelerated Reconciliation
-    path: sections/section-030/module-01/course.md
-  - type: reading
-    title: Agent-Owned Retrieval And Event-Accelerated Reconciliation
-    path: sections/section-030/module-01/course-01-agent-owned-retrieval-and-event-accelerated-reconciliation.md
-  - type: reading
-    title: Summary
-    path: sections/section-030/module-01/course-02-summary.md
-- id: module-040
-  title: Continuously Reconciled
-  description: Developed reading and reasoning for Continuously Reconciled.
-  maturity: alpha
-  content:
-  - type: reading
-    title: Continuously Reconciled
-    path: sections/section-040/README.md
-  - type: reading
-    title: Drift, Refresh, Ignore Rules And Reconciliation Patterns
-    path: sections/section-040/module-01/course.md
-  - type: reading
-    title: Drift, Refresh, Ignore Rules And Reconciliation Patterns
-    path: sections/section-040/module-01/course-01-drift-refresh-ignore-rules-and-reconciliation-patterns.md
-  - type: reading
-    title: Summary
-    path: sections/section-040/module-01/course-02-summary.md
+    description: Audience, setup and how the course is made.
+    content:
+      - type: reading
+        title: Introduction
+        path: sections/intro/README.md
+      - type: reading
+        title: Welcome To The Course
+        path: sections/intro/course-01-welcome.md
+      - type: reading
+        title: Get Your Machine Ready
+        path: sections/intro/course-02-get-your-machine-ready.md
+      - type: reading
+        title: How This Course Is Made
+        path: sections/intro/course-03-how-this-course-is-made.md
+
+
+  - id: module-010
+    title: "Declared State, Rendering And Controllers"
+    description: >
+      Makes the reader able to state a workload as declared state in Git,
+      render it with Kustomize, and explain how the Argo CD controller owns,
+      compares and prunes the objects it applies.
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-010/README.md
+
+      - type: reading
+        title: "Declared State, Rendering And Controllers"
+        path: sections/section-010/module-01/course.md
+      - type: reading
+        title: "Desired State Versus Imperative Steps"
+        path: sections/section-010/module-01/course-01-desired-state-versus-imperative-steps.md
+      - type: reading
+        title: "Sufficient Intent And Rendering"
+        path: sections/section-010/module-01/course-02-sufficient-intent-and-rendering.md
+      - type: reading
+        title: Question
+        path: sections/section-010/module-01/labs/lab-01/question.md
+      - type: lab
+        title: "Declare The Desired State In Git Lab"
+        path: sections/section-010/module-01/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 25m
+        topic: declarative-state
+        task_kind: build
+        tags: [gitops, declarative, kustomize, argocd, application]
+        learning_goals:
+          - Put the staging replica count and memory limit in the Git overlay instead of the live Deployment
+          - Render the overlay with kubectl kustomize before it is applied
+          - Create an Argo CD Application with automated sync and prune that reports Synced
+        resources:
+          - name: "Argo CD declarative setup"
+            url: https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/
+          - name: "Kustomize"
+            url: https://kubectl.docs.kubernetes.io/references/kustomize/
+      - type: reading
+        title: "Controllers, Ownership And Pruning"
+        path: sections/section-010/module-01/course-03-controllers-ownership-and-pruning.md
+      - type: reading
+        title: Summary
+        path: sections/section-010/module-01/course-04-summary.md
+
+      - type: reading
+        title: Question
+        path: sections/section-010/capstone/labs/lab-01/question.md
+      - type: lab
+        title: "Capstone: Deliver Two Environments From One Repository"
+        path: sections/section-010/capstone/labs/lab-01
+        difficulty: advanced
+        estimated_duration: 40m
+        topic: declarative-state
+        task_kind: build
+        tags: [gitops, kustomize, overlays, argocd, two-environments]
+        learning_goals:
+          - Fix a production overlay that no longer builds
+          - Retire a ConfigMap by removing it from Git so prune deletes it
+          - Deliver staging and production through separate Applications and call production from the shuttle pod
+        resources:
+          - name: "Kustomize overlays"
+            url: https://kubectl.docs.kubernetes.io/references/kustomize/
+      - type: quiz
+        title: "Knowledge Check: Declared State, Rendering And Controllers"
+        path: sections/section-010/quiz.yaml
+        pass_score: 70
+
+
+  - id: module-020
+    title: "Versions, References And Promotion"
+    description: >
+      Makes the reader able to pick a stable reference for a deployment, pin
+      an Application to a commit or tag, roll back with a revert commit, and
+      promote an immutable artifact between environments.
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-020/README.md
+
+      - type: reading
+        title: "Versions, References And Promotion"
+        path: sections/section-020/module-01/course.md
+      - type: reading
+        title: "Commits, Branches And Tags"
+        path: sections/section-020/module-01/course-01-commits-branches-and-tags.md
+      - type: reading
+        title: "Pinning, Rollback And Audit"
+        path: sections/section-020/module-01/course-02-pinning-rollback-and-audit.md
+      - type: reading
+        title: Question
+        path: sections/section-020/module-01/labs/lab-01/question.md
+      - type: lab
+        title: "Roll Back With A Revert Commit Lab"
+        path: sections/section-020/module-01/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 25m
+        topic: versioning
+        task_kind: build
+        tags: [gitops, git-revert, rollback, audit, argocd]
+        learning_goals:
+          - Find the bad release commit in the history of main
+          - Roll back with git revert and a normal push, without a force push
+          - Confirm the Deployment runs the last good image again
+        resources:
+          - name: "Git revert"
+            url: https://git-scm.com/docs/git-revert
+          - name: "Argo CD tracking strategies"
+            url: https://argo-cd.readthedocs.io/en/stable/user-guide/tracking_strategies/
+      - type: reading
+        title: "Promotion, Immutable Artifacts And Secrets"
+        path: sections/section-020/module-01/course-03-promotion-immutable-artifacts-and-secrets.md
+      - type: reading
+        title: Summary
+        path: sections/section-020/module-01/course-04-summary.md
+
+      - type: reading
+        title: Question
+        path: sections/section-020/capstone/labs/lab-01/question.md
+      - type: lab
+        title: "Capstone: Promote A Release By Tag"
+        path: sections/section-020/capstone/labs/lab-01
+        difficulty: advanced
+        estimated_duration: 40m
+        topic: promotion
+        task_kind: build
+        tags: [gitops, tags, promotion, immutable, argocd]
+        learning_goals:
+          - Create the release tag v1.2.0 on the tested commit
+          - Follow the branch in staging and the tag in production
+          - Deliver both environments with automated sync and prune
+        resources:
+          - name: "Argo CD tracking strategies"
+            url: https://argo-cd.readthedocs.io/en/stable/user-guide/tracking_strategies/
+      - type: quiz
+        title: "Knowledge Check: Versions, References And Promotion"
+        path: sections/section-020/quiz.yaml
+        pass_score: 70
+
+
+  - id: module-030
+    title: "Pull, Credentials And Webhooks"
+    description: >
+      Makes the reader able to explain pull-based delivery, give Argo CD a
+      least-privilege credential for a private repository, and tell polling
+      from webhooks including what happens during a repository outage.
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-030/README.md
+
+      - type: reading
+        title: "Pull, Credentials And Webhooks"
+        path: sections/section-030/module-01/course.md
+      - type: reading
+        title: "Push Versus Pull"
+        path: sections/section-030/module-01/course-01-push-versus-pull.md
+      - type: reading
+        title: "Repository Credentials"
+        path: sections/section-030/module-01/course-02-repository-credentials.md
+      - type: reading
+        title: Question
+        path: sections/section-030/module-01/labs/lab-01/question.md
+      - type: lab
+        title: "Pull From A Private Repository Lab"
+        path: sections/section-030/module-01/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 25m
+        topic: pull-delivery
+        task_kind: build
+        tags: [gitops, pull, repository-secret, credentials, argocd]
+        learning_goals:
+          - Register the private repository with a labelled Secret that holds the read-only credential
+          - Create the staging Application with automated sync
+          - Deliver a message change by a commit that Argo CD pulls
+        resources:
+          - name: "Argo CD private repositories"
+            url: https://argo-cd.readthedocs.io/en/stable/user-guide/private-repositories/
+      - type: reading
+        title: "Polling, Webhooks And Outages"
+        path: sections/section-030/module-01/course-03-polling-webhooks-and-outages.md
+      - type: reading
+        title: Summary
+        path: sections/section-030/module-01/course-04-summary.md
+
+      - type: reading
+        title: Question
+        path: sections/section-030/capstone/labs/lab-01/question.md
+      - type: lab
+        title: "Capstone: Pull, Notify And Change Through Git"
+        path: sections/section-030/capstone/labs/lab-01
+        difficulty: advanced
+        estimated_duration: 40m
+        topic: pull-delivery
+        task_kind: build
+        tags: [gitops, webhook, polling, refresh, argocd]
+        learning_goals:
+          - Pull the production overlay from a private repository with a read-only credential
+          - Create a Gitea push webhook that notifies Argo CD
+          - Change the production replica count only by a commit
+        resources:
+          - name: "Argo CD webhook configuration"
+            url: https://argo-cd.readthedocs.io/en/stable/operator-manual/webhook/
+      - type: quiz
+        title: "Knowledge Check: Pull, Credentials And Webhooks"
+        path: sections/section-030/quiz.yaml
+        pass_score: 70
+
+
+  - id: module-040
+    title: "Drift, Refresh And Reconciliation"
+    description: >
+      Makes the reader able to detect drift, choose a sync policy with prune
+      and self-heal, and use narrow ignore rules and the app-of-apps pattern
+      so reconciliation stays continuous.
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-040/README.md
+
+      - type: reading
+        title: "Drift, Refresh And Reconciliation"
+        path: sections/section-040/module-01/course.md
+      - type: reading
+        title: "Drift And Refresh"
+        path: sections/section-040/module-01/course-01-drift-and-refresh.md
+      - type: reading
+        title: "Automated Sync, Self-Heal And Prune"
+        path: sections/section-040/module-01/course-02-automated-sync-self-heal-and-prune.md
+      - type: reading
+        title: "Ignore Rules And Reconciliation Patterns"
+        path: sections/section-040/module-01/course-03-ignore-rules-and-reconciliation-patterns.md
+      - type: reading
+        title: Question
+        path: sections/section-040/module-01/labs/lab-01/question.md
+      - type: lab
+        title: "Self-Heal With A Narrow Ignore Rule Lab"
+        path: sections/section-040/module-01/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 25m
+        topic: reconciliation
+        task_kind: build
+        tags: [gitops, self-heal, ignoredifferences, drift, argocd]
+        learning_goals:
+          - Enable automated sync with prune and self-heal on the Application
+          - Leave the replica count to the autoscaling team with one narrow ignoreDifferences entry
+          - Show that the image edit is still reverted
+        resources:
+          - name: "Argo CD automated sync"
+            url: https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/
+          - name: "Argo CD diffing customization"
+            url: https://argo-cd.readthedocs.io/en/stable/user-guide/diffing/
+      - type: reading
+        title: Summary
+        path: sections/section-040/module-01/course-04-summary.md
+
+      - type: reading
+        title: Question
+        path: sections/section-040/capstone/labs/lab-01/question.md
+      - type: lab
+        title: "Capstone: Bring Up The Cluster From One Parent Application"
+        path: sections/section-040/capstone/labs/lab-01
+        difficulty: advanced
+        estimated_duration: 40m
+        topic: reconciliation
+        task_kind: build
+        tags: [gitops, app-of-apps, reconciliation, argocd]
+        learning_goals:
+          - Create a parent Application that syncs the apps folder with prune and self-heal
+          - Bring up the child Applications from the parent alone
+          - Retire an obsolete child by removing its manifest from Git
+        resources:
+          - name: "Argo CD cluster bootstrapping"
+            url: https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/
+      - type: quiz
+        title: "Knowledge Check: Drift, Refresh And Reconciliation"
+        path: sections/section-040/quiz.yaml
+        pass_score: 70
+
+
+  - id: module-final-quiz
+    title: Final Knowledge Check
+    description: A mixed check across all four GitOps principles.
+    content:
+      - type: quiz
+        title: "Final Knowledge Check: GitOps Principles"
+        path: sections/final-domain-quiz.yaml
+        pass_score: 70

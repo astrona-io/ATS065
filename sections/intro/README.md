@@ -1,3 +1,5 @@
 # Introduction
 
-This introduction explains the GitOps Principles course, reading method and author review. The domain represents 30% of Certified GitOps Associate (CGOA) and belongs to ATP013. Read the welcome, requirements and authoring explanation before the technical sections.
+This introduction explains how to use the GitOps Principles course. Welcome To The Course describes the audience, the learning outcomes and the course layout, including the playgrounds, labs and knowledge checks. Get Your Machine Ready explains the tools to install and the `astrona` commands used every day. How This Course Is Made describes author checks, contributions and the license.
+
+The course starts with the declarative principle.

@@ -1,0 +1,219 @@
+schema_version: 1
+kind: question_bank
+id: ats065-020
+course_id: ATS065
+exam_code: CGOA
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-020
+  title: "Versions, References And Promotion"
+questions:
+  - id: ats065-020-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain why a commit is the unit of immutable history"
+    source_readings:
+      - sections/section-020/module-01/course-01-commits-branches-and-tags.md
+    prompt: |-
+      Why can a Git commit ID be used as a fixed reference to a state?
+    options:
+      - id: a
+        text: "The ID is derived from the content and the parent commit, so changing the content produces a different ID."
+        explanation: "Correct. A commit cannot be altered in place. A change creates a new commit."
+      - id: b
+        text: "The ID is assigned by the Git server in order of arrival."
+        explanation: "Commit IDs are computed by Git from content, not assigned by a server."
+      - id: c
+        text: "The ID changes every time the branch is pulled."
+        explanation: "Pulling does not change a commit ID."
+      - id: d
+        text: "The ID is a timestamp, so it always points to the latest state."
+        explanation: "The ID is a hash and does not carry a time ordering."
+    correct_option: a
+    explanation: "Correct. A commit cannot be altered in place. A change creates a new commit."
+  - id: ats065-020-q02
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Tell a branch from a tag"
+    source_readings:
+      - sections/section-020/module-01/course-01-commits-branches-and-tags.md
+    prompt: |-
+      A repository has a branch `main` and a tag `v1.0.0`. Which statement is correct?
+    options:
+      - id: a
+        text: "Both always move to the newest commit."
+        explanation: "A tag is meant to stay on one commit."
+      - id: b
+        text: "A branch is a moving pointer that advances with new commits. A tag is meant to stay on one commit, but it can be moved on purpose."
+        explanation: "Correct. A tag is only as fixed as the team policy and the server protection that guard it."
+      - id: c
+        text: "A tag cannot be deleted or moved by anyone."
+        explanation: "Git allows deleting or forcing a tag. Server rules can block this."
+      - id: d
+        text: "A branch cannot be reached by Argo CD."
+        explanation: "Argo CD can track a branch, a tag or a commit."
+    correct_option: b
+    explanation: "Correct. A tag is only as fixed as the team policy and the server protection that guard it."
+  - id: ats065-020-q03
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain the risk of tracking a branch"
+    source_readings:
+      - sections/section-020/module-01/course-01-commits-branches-and-tags.md
+    prompt: |-
+      An `Application` uses `targetRevision: main`. Why does this make the deployed state depend on more than a review of one commit?
+    options:
+      - id: a
+        text: "A branch name is rejected by Argo CD."
+        explanation: "Argo CD accepts a branch name."
+      - id: b
+        text: "Each new commit on `main` becomes the new target at the next refresh, so the target moves without a change to the Application."
+        explanation: "Correct. The Application stays the same while the revision it resolves to changes."
+      - id: c
+        text: "A branch can hold only one file."
+        explanation: "A branch holds the whole tree."
+      - id: d
+        text: "Argo CD ignores commits that are not tagged."
+        explanation: "Argo CD resolves the branch to its head commit."
+    correct_option: b
+    explanation: "Correct. The Application stays the same while the revision it resolves to changes."
+  - id: ats065-020-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain how an Application is pinned"
+    source_readings:
+      - sections/section-020/module-01/course-02-pinning-rollback-and-audit.md
+    prompt: |-
+      A team sets `targetRevision` to a full commit ID. What does the sync resolve and record?
+    options:
+      - id: a
+        text: "It resolves the commit ID to itself and records it as the synced revision in the Application status."
+        explanation: "Correct. The pin keeps the same input until someone edits the Application."
+      - id: b
+        text: "It resolves to the latest commit of `main`."
+        explanation: "A commit ID is already a fixed revision."
+      - id: c
+        text: "It resolves to the newest tag."
+        explanation: "A tag is not involved when a commit is named."
+      - id: d
+        text: "It records nothing, because commit IDs are not stored."
+        explanation: "The synced revision is part of the status."
+    correct_option: a
+    explanation: "Correct. The pin keeps the same input until someone edits the Application."
+  - id: ats065-020-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Describe rollback as a new commit in the source of truth"
+    source_readings:
+      - sections/section-020/module-01/course-02-pinning-rollback-and-audit.md
+    prompt: |-
+      Automated sync is on and the team wants to return to the previous version. Which approach keeps Git as the source of truth?
+    options:
+      - id: a
+        text: "Use `argocd app rollback`, which works with automated sync on."
+        explanation: "Rollback from the CLI is refused while automated sync is enabled, and it would not change Git."
+      - id: b
+        text: "Run `kubectl edit` on the Deployment."
+        explanation: "The next sync or self-heal reverts it, and Git is not changed."
+      - id: c
+        text: "Revert the bad commit with `git revert` and push it, so the repository states the earlier content again."
+        explanation: "Correct. History is kept, and the pull loop applies the reverted state."
+      - id: d
+        text: "Delete the Application and recreate it."
+        explanation: "This does not address the bad state in the repository."
+    correct_option: c
+    explanation: "Correct. History is kept, and the pull loop applies the reverted state."
+  - id: ats065-020-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Use history as an audit record"
+    source_readings:
+      - sections/section-020/module-01/course-02-pinning-rollback-and-audit.md
+    prompt: |-
+      Which command shows who changed the `scout` image tag, when, and why, from the repository alone?
+    options:
+      - id: a
+        text: "`kubectl get events`"
+        explanation: "Events record cluster activity for a short time and do not hold the author or the reason."
+      - id: b
+        text: "`git log -p -- overlays/production/kustomization.yaml`"
+        explanation: "Correct. The log shows the author, date, message and the change to that file."
+      - id: c
+        text: "`argocd app list`"
+        explanation: "This lists applications and their status."
+      - id: d
+        text: "`kubectl describe pod shuttle`"
+        explanation: "This describes a pod, not a change record."
+    correct_option: b
+    explanation: "Correct. The log shows the author, date, message and the change to that file."
+  - id: ats065-020-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain promotion as a change of a reference"
+    source_readings:
+      - sections/section-020/module-01/course-03-promotion-immutable-artifacts-and-secrets.md
+    prompt: |-
+      How is a release promoted from staging to production in the course model?
+    options:
+      - id: a
+        text: "The image is rebuilt with a production tag."
+        explanation: "Rebuilding creates a different artifact, so what was tested is not what is promoted."
+      - id: b
+        text: "The same immutable image reference moves into the production overlay by a reviewed commit."
+        explanation: "Correct. The artifact stays the same and only the declaration changes."
+      - id: c
+        text: "The staging namespace is renamed."
+        explanation: "Renaming does not deploy a release."
+      - id: d
+        text: "A person runs `kubectl set image` on production."
+        explanation: "This bypasses the repository."
+    correct_option: b
+    explanation: "Correct. The artifact stays the same and only the declaration changes."
+  - id: ats065-020-q08
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Explain why a mutable tag is a weak reference"
+    source_readings:
+      - sections/section-020/module-01/course-03-promotion-immutable-artifacts-and-secrets.md
+    prompt: |-
+      An overlay uses `image: scout:latest`. What is the weakness?
+    options:
+      - id: a
+        text: "`latest` is not a valid tag."
+        explanation: "`latest` is valid."
+      - id: b
+        text: "Kubernetes cannot pull an image with `latest`."
+        explanation: "It can pull it."
+      - id: c
+        text: "The same text can point to different content over time, so the repository does not fix what runs."
+        explanation: "Correct. Use a version tag that is never reused or a digest."
+      - id: d
+        text: "Argo CD forbids `latest` in a manifest."
+        explanation: "Argo CD does not forbid it."
+    correct_option: c
+    explanation: "Correct. Use a version tag that is never reused or a digest."
+  - id: ats065-020-q09
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Explain secrets in a declarative repository"
+    source_readings:
+      - sections/section-020/module-01/course-03-promotion-immutable-artifacts-and-secrets.md
+    prompt: |-
+      A team wants every value in Git, including a database password. What is the sound approach?
+    options:
+      - id: a
+        text: "Store the password in a plain `Secret` manifest, because base64 is encryption."
+        explanation: "Base64 is an encoding, and anyone with the file can decode it."
+      - id: b
+        text: "Keep the password out of the repository and commit only an encrypted or referenced form that a controller turns into the `Secret`."
+        explanation: "Correct. The repository states the intent, and the value stays protected."
+      - id: c
+        text: "Put the password in a branch name."
+        explanation: "A branch name is visible to every reader."
+      - id: d
+        text: "Commit the password and delete it in the next commit."
+        explanation: "History keeps the old commit, so the value stays exposed."
+    correct_option: b
+    explanation: "Correct. The repository states the intent, and the value stays protected."

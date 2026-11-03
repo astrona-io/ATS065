@@ -203,49 +203,38 @@ The course covers **GitOps Principles**, worth **30%** of
 **Certified GitOps Associate (CGOA)**. It is part of **ATP013**.
 The official objectives are listed in `astrona.yaml` and mapped in `CURRICULUM.md`.
 
-### Reading-only scope
+### Hands-on scope
 
-The maintainer approved the lesson plan, asked for deeper teaching, and explicitly
-requested **no labs or playgrounds**. That instruction overrides shared examples
-about hands-on environments, graded labs and playground markers. Do not create
-runtime configurations, executable exercises or playground lifecycle markers.
-The course must be usable without a cluster or installed command-line tools.
+The maintainer lifted the earlier reading-only limit on 2026-11-03. Every module
+has a playground and a graded lab, every section ends with a capstone lab and a
+knowledge check, and a final knowledge check closes the course. Environments run
+on kind (Kubernetes 1.35) with Argo CD as the GitOps agent and an in-cluster Gitea
+server as plumbing only: Gitea is never a lesson subject, it only provides a Git
+repository. Labs and playgrounds are built untested: run only static checks
+(`astrona validate -c`, `bash -n`, `ruby -ryaml`). Every lab README says UNTESTED.
+Use the playground markers (`<!-- astrona:playground -->`,
+`<!-- astrona:playground:renew -->`, `<!-- astrona:playground:destroy -->`) as
+described in the shared rules above. Do not write that a lab was run or verified.
 
 ### Teaching structure and depth
 
-Every section begins with its own introduction and measurable learning outcomes.
-Every module contains a landing page, developed teaching lessons and a final
-`# Summary` page. Put the summary after all its lessons and before the next
-module. This reading-only summary has no playground destruction marker.
+Every section has an introduction and measurable learning outcomes. Every module
+has a landing page, deep-dive parts and a final `# Summary` page that ends with
+`<!-- astrona:playground:destroy -->`. Labs follow the part they practise in
+`astrona.yaml`. Explain mechanisms, responsible components, realistic examples
+and the limits of each claim. Never invent command output.
 
-Explain mechanisms, responsible components, realistic examples and the limits
-of each claim. Include worked reasoning and relevant failure cases. Avoid thin
-outlines, repetitive filler and invented command output. Split broad topics when
-needed; do not force a fixed number of lessons. The shared plain-English,
-self-contained-page and Mermaid rules apply throughout.
+### Quizzes
 
-### Reusable question data
-
-Write original single-choice questions as YAML banks under section folders and
-`assessments/`. Use the versioned contract in `schemas/question-bank.schema.json`
-and teaching order in `assessments/index.yaml`. Each bank has 5–15 questions with
-stable IDs, one correct option, per-option feedback, a measurable learning
-objective and source reading paths for author traceability.
-
-Do not register YAML as a Markdown reading. A future renderer consumes the bank
-index and presents the checkpoint after its declared reading, preserving bank
-order when several share an anchor. Do not expose answer keys before submission
-in a production quiz interface. These public banks are practice material, not
-secure or official exam questions.
+Each section has `quiz.yaml` after its capstone, and `sections/final-domain-quiz.yaml`
+closes the course. They use `kind: question_bank`, `schema_version: 1`,
+`status: draft`, single-choice questions with per-option explanations, and are
+registered in `astrona.yaml` as `type: quiz` with `pass_score: 70`.
 
 ### Review and authoring checks
 
-Preserve the shared CLAUDE.md prefix copied from ATS015. Keep course IDs, official
-domain weights and ATP links unchanged. Technical pages have `draft: true` in
-Markdown front matter until review; a module-level flag alone is insufficient.
-The ATP registration remains draft until publication is approved.
-
-Primary author sources are recorded in `SOURCES.md`. The objective list was
-verified on 2026-10-11. Detailed reading expansions were written on 2026-10-11.
-Validate manifest paths, summary ordering, curriculum coverage and question
-contracts. Do not claim runtime verification for a reading-only course.
+Keep course IDs, official domain weights and ATP links unchanged. Technical pages
+have `draft: true` in Markdown front matter until review. The ATP registration
+remains draft until publication is approved. Primary author sources are in
+`SOURCES.md`. Validate manifest paths, summary ordering, curriculum coverage and
+question contracts, and run `astrona validate -c` on every lab and playground.

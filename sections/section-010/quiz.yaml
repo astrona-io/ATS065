@@ -1,0 +1,242 @@
+schema_version: 1
+kind: question_bank
+id: ats065-010
+course_id: ATS065
+exam_code: CGOA
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-010
+  title: "Declared State, Rendering And Controllers"
+questions:
+  - id: ats065-010-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Tell a declarative description from an ordered list of commands"
+    source_readings:
+      - sections/section-010/module-01/course-01-desired-state-versus-imperative-steps.md
+    prompt: |-
+      A repository holds a file `deploy.sh` with `kubectl create namespace starfleet-staging` and `kubectl create deployment scout`. A teammate says the repository makes the deployment declarative because it has history and review. What is the correct response?
+    options:
+      - id: a
+        text: "Correct, because every file in Git is a declaration of state."
+        explanation: "Git stores any kind of content. Storage does not decide what the content means."
+      - id: b
+        text: "Incorrect, because the script lists actions and fails on a second run, so history and review do not make it a description of an end state."
+        explanation: "Correct. A declarative file states a result that stays true. The script names actions, and its first step fails when the namespace already exists."
+      - id: c
+        text: "Correct, because `kubectl` talks to a declarative API."
+        explanation: "The API is declarative, but a script that calls it with ordered create commands is still a list of steps."
+      - id: d
+        text: "Incorrect, because only YAML files can be declarative."
+        explanation: "A file format does not decide the meaning. A YAML file can also hold an ordered procedure."
+    correct_option: b
+    explanation: "Correct. A declarative file states a result that stays true. The script names actions, and its first step fails when the namespace already exists."
+  - id: ats065-010-q02
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Tell a declarative description from an ordered list of commands"
+    source_readings:
+      - sections/section-010/module-01/course-01-desired-state-versus-imperative-steps.md
+    prompt: |-
+      A controller finds that the live Deployment has 3 replicas and the declared Deployment has 1. What does it do on a pass of its loop?
+    options:
+      - id: a
+        text: "It replays the commands that were used to create the Deployment."
+        explanation: "A controller does not keep a list of commands. It only needs the two states and a rule."
+      - id: b
+        text: "It reads both states and acts on the difference, so it changes the live replica count toward 1 under its policy."
+        explanation: "Correct. The loop reads desired state, reads actual state and acts on the difference."
+      - id: c
+        text: "It stops and waits for a person to approve the change."
+        explanation: "Approval is a policy of the surrounding process. The loop itself acts on the difference."
+      - id: d
+        text: "It deletes the Deployment and creates it from nothing."
+        explanation: "A controller reduces the difference. It does not need to recreate the object."
+    correct_option: b
+    explanation: "Correct. The loop reads desired state, reads actual state and acts on the difference."
+  - id: ats065-010-q03
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain what makes a declaration sufficient"
+    source_readings:
+      - sections/section-010/module-01/course-02-sufficient-intent-and-rendering.md
+    prompt: |-
+      The `scout` manifest has no `replicas` field and no resource limits. It deploys and runs. What is the problem for GitOps?
+    options:
+      - id: a
+        text: "There is no problem, because Kubernetes fills in the missing values."
+        explanation: "The values exist, but the repository no longer says what the operator relies on."
+      - id: b
+        text: "The manifest is invalid and Argo CD rejects it."
+        explanation: "The API server accepts the manifest and fills in defaults. Argo CD applies it."
+      - id: c
+        text: "The repository does not state values that decide behaviour, so a changed default or a policy can change the workload without a commit."
+        explanation: "Correct. A value that matters should be written down, or the accepted default should be named."
+      - id: d
+        text: "Argo CD cannot compare a manifest without `replicas`."
+        explanation: "Argo CD compares after normalisation and handles defaulted fields."
+    correct_option: c
+    explanation: "Correct. A value that matters should be written down, or the accepted default should be named."
+  - id: ats065-010-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain how rendering turns small pieces into final manifests"
+    source_readings:
+      - sections/section-010/module-01/course-02-sufficient-intent-and-rendering.md
+    prompt: |-
+      The staging overlay lists `../../base` as a resource and sets `replicas` with `count: 1`. What does `kubectl kustomize overlays/staging` print?
+    options:
+      - id: a
+        text: "Only the lines that the overlay changed."
+        explanation: "The output is the complete final manifests, not a diff."
+      - id: b
+        text: "The base manifests with the overlay changes applied, such as the namespace, label, image tag, replica count and patch."
+        explanation: "Correct. Rendering combines the base and the overlay into the manifests that are applied."
+      - id: c
+        text: "Nothing, until the manifests are applied to the cluster."
+        explanation: "Rendering is a local step that reads files and prints manifests."
+      - id: d
+        text: "The live objects of the namespace."
+        explanation: "Rendering does not read the cluster."
+    correct_option: b
+    explanation: "Correct. Rendering combines the base and the overlay into the manifests that are applied."
+  - id: ats065-010-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain rendering inputs and where they hide"
+    source_readings:
+      - sections/section-010/module-01/course-02-sufficient-intent-and-rendering.md
+    prompt: |-
+      An overlay references a remote Kustomize base by a branch URL. Nobody changes the repository, and the rendered Deployment still differs from last week. What happened?
+    options:
+      - id: a
+        text: "The remote branch moved, so the render input changed without a commit in this repository."
+        explanation: "Correct. A base that follows a branch changes the output. Pin remote bases to a commit or an exact version."
+      - id: b
+        text: "Argo CD randomises the output of each render."
+        explanation: "Rendering is a function of its inputs. Argo CD does not randomise it."
+      - id: c
+        text: "The Git commit ID of the repository changed by itself."
+        explanation: "A commit ID cannot change without a new commit."
+      - id: d
+        text: "The Deployment controller edited the manifest in Git."
+        explanation: "The Deployment controller does not write to the repository."
+    correct_option: a
+    explanation: "Correct. A base that follows a branch changes the output. Pin remote bases to a commit or an exact version."
+  - id: ats065-010-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Read a render failure from the Application status"
+    source_readings:
+      - sections/section-010/module-01/course-02-sufficient-intent-and-rendering.md
+    prompt: |-
+      A commit renames `overlays/staging/message.yaml` but not the entry in the `kustomization.yaml`. What does Argo CD show, and what happens to the running pods?
+    options:
+      - id: a
+        text: "A `ComparisonError` condition, and the running pods stay as they were."
+        explanation: "Correct. A failed render means nothing is compared or applied, so the workload is unchanged."
+      - id: b
+        text: "The pods are deleted because the manifest no longer renders."
+        explanation: "A failed render applies nothing, so the pods are not touched."
+      - id: c
+        text: "The `Application` is `Synced` because nothing changed in the cluster."
+        explanation: "The render failed, so the comparison could not run and an error condition is set."
+      - id: d
+        text: "Argo CD applies the previous render and hides the error."
+        explanation: "Argo CD reports the error in the condition."
+    correct_option: a
+    explanation: "Correct. A failed render means nothing is compared or applied, so the workload is unchanged."
+  - id: ats065-010-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Describe how Argo CD marks the objects it owns"
+    source_readings:
+      - sections/section-010/module-01/course-03-controllers-ownership-and-pruning.md
+    prompt: |-
+      How does the Argo CD application controller know that a live ConfigMap belongs to `scout-staging`?
+    options:
+      - id: a
+        text: "By the namespace alone: every object in the destination namespace belongs to the application."
+        explanation: "An object in the namespace without the tracking value is not part of the application."
+      - id: b
+        text: "By the file name of the manifest in the repository."
+        explanation: "File names do not exist in the cluster."
+      - id: c
+        text: "By a tracking annotation, `argocd.argoproj.io/tracking-id`, that Argo CD writes when it applies the object."
+        explanation: "Correct. The value holds the application name, group, kind, namespace and name."
+      - id: d
+        text: "By the creation time of the object."
+        explanation: "Time does not identify an owner."
+    correct_option: c
+    explanation: "Correct. The value holds the application name, group, kind, namespace and name."
+  - id: ats065-010-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain what pruning removes and when"
+    source_readings:
+      - sections/section-010/module-01/course-03-controllers-ownership-and-pruning.md
+    prompt: |-
+      A ConfigMap manifest is deleted from the repository. The `Application` has automated sync and no `prune` setting. What happens?
+    options:
+      - id: a
+        text: "The live ConfigMap is deleted at the next sync."
+        explanation: "With the default `prune: false`, automated sync does not delete tracked objects."
+      - id: b
+        text: "The ConfigMap stays, and the `Application` shows it as `OutOfSync` because it requires pruning."
+        explanation: "Correct. Pruning is off by default, so the orphan stays until a sync with pruning runs."
+      - id: c
+        text: "The sync fails with a render error."
+        explanation: "The render succeeds. The object is simply no longer described."
+      - id: d
+        text: "Argo CD adds the manifest back to the repository."
+        explanation: "Argo CD never writes to the repository."
+    correct_option: b
+    explanation: "Correct. Pruning is off by default, so the orphan stays until a sync with pruning runs."
+  - id: ats065-010-q09
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Explain deletion behaviour and ownership"
+    source_readings:
+      - sections/section-010/module-01/course-03-controllers-ownership-and-pruning.md
+    prompt: |-
+      A team deletes the `Application` object `scout-staging`. It has no finalizer. What happens to the Deployment that it created?
+    options:
+      - id: a
+        text: "It is deleted, because the `Application` owns it."
+        explanation: "Without the finalizer `resources-finalizer.argocd.argoproj.io`, deleting the `Application` does not delete its workload."
+      - id: b
+        text: "It stays running and loses its owner."
+        explanation: "Correct. With the finalizer, Argo CD would delete the tracked objects first."
+      - id: c
+        text: "It is scaled to zero."
+        explanation: "Argo CD does not scale objects when an `Application` is deleted."
+      - id: d
+        text: "It is moved to the `default` namespace."
+        explanation: "Objects are not moved."
+    correct_option: b
+    explanation: "Correct. With the finalizer, Argo CD would delete the tracked objects first."
+  - id: ats065-010-q10
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Explain ownership of a field shared by two controllers"
+    source_readings:
+      - sections/section-010/module-01/course-03-controllers-ownership-and-pruning.md
+    prompt: |-
+      A Horizontal Pod Autoscaler changes `spec.replicas` while the repository sets `replicas: 1`. What is the sound way to settle ownership?
+    options:
+      - id: a
+        text: "Let both write and rely on whichever writes last."
+        explanation: "The two controllers then overwrite each other in turn."
+      - id: b
+        text: "Remove the autoscaler and scale by hand."
+        explanation: "This removes a legitimate controller instead of settling who owns the field."
+      - id: c
+        text: "Delete the `replicas` field from every Deployment in the cluster."
+        explanation: "This changes unrelated objects and does not name an owner."
+      - id: d
+        text: "Decide that one controller owns the field and configure the other to leave it alone, for example with a narrow ignore rule for `/spec/replicas`."
+        explanation: "Correct. A declarative file does not decide this; the teams decide it and then encode the decision."
+    correct_option: d
+    explanation: "Correct. A declarative file does not decide this; the teams decide it and then encode the decision."

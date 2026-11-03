@@ -1,0 +1,219 @@
+schema_version: 1
+kind: question_bank
+id: ats065-030
+course_id: ATS065
+exam_code: CGOA
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-030
+  title: "Pull, Credentials And Webhooks"
+questions:
+  - id: ats065-030-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Tell push delivery from pull delivery"
+    source_readings:
+      - sections/section-030/module-01/course-01-push-versus-pull.md
+    prompt: |-
+      A CI job runs `kubectl apply` against production with a cluster credential stored in the CI system. What is this called, and what is the main exposure?
+    options:
+      - id: a
+        text: "Pull delivery, because the CI system reads the repository."
+        explanation: "Reading the repository is not what makes it pull. The CI system pushes into the cluster."
+      - id: b
+        text: "Push delivery. The credential that can change the cluster lives outside the cluster and must be reachable from it."
+        explanation: "Correct. In pull delivery, the agent inside the cluster holds the access and reaches out to the repository."
+      - id: c
+        text: "Push delivery, and it has no credential exposure."
+        explanation: "A credential for the cluster is stored in the CI system."
+      - id: d
+        text: "Pull delivery, because the job runs on a schedule."
+        explanation: "A schedule does not change who holds the cluster access."
+    correct_option: b
+    explanation: "Correct. In pull delivery, the agent inside the cluster holds the access and reaches out to the repository."
+  - id: ats065-030-q02
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Describe the direction of the connection in pull delivery"
+    source_readings:
+      - sections/section-030/module-01/course-01-push-versus-pull.md
+    prompt: |-
+      In pull delivery, which direction does the network connection open?
+    options:
+      - id: a
+        text: "From the Git server into the cluster."
+        explanation: "That would be push, and it needs an inbound path to the cluster."
+      - id: b
+        text: "From a person's laptop into the cluster API."
+        explanation: "This is manual access."
+      - id: c
+        text: "From the agent in the cluster out to the Git server."
+        explanation: "Correct. The cluster needs only outbound access to the repository."
+      - id: d
+        text: "From the CI system into the Git server."
+        explanation: "This is the build path, not the delivery path."
+    correct_option: c
+    explanation: "Correct. The cluster needs only outbound access to the repository."
+  - id: ats065-030-q03
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Configure repository credentials for Argo CD"
+    source_readings:
+      - sections/section-030/module-01/course-02-repository-credentials.md
+    prompt: |-
+      How does Argo CD learn the credentials for a private repository in this course?
+    options:
+      - id: a
+        text: "From a `Secret` in the `argocd` namespace labelled `argocd.argoproj.io/secret-type: repository`, holding the URL, username and password."
+        explanation: "Correct. Argo CD reads repository Secrets with that label."
+      - id: b
+        text: "From the `Application` spec, in a `password` field."
+        explanation: "The Application does not hold credentials."
+      - id: c
+        text: "From an environment variable on the Gitea pod."
+        explanation: "The Gitea pod does not configure Argo CD."
+      - id: d
+        text: "From the node's kubeconfig file."
+        explanation: "The kubeconfig is not used for repository access."
+    correct_option: a
+    explanation: "Correct. Argo CD reads repository Secrets with that label."
+  - id: ats065-030-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Apply least privilege to the pull credential"
+    source_readings:
+      - sections/section-030/module-01/course-02-repository-credentials.md
+    prompt: |-
+      Why does the lab use a read-only user `argocd-reader` for the repository?
+    options:
+      - id: a
+        text: "A read-only user syncs faster."
+        explanation: "Speed does not depend on this."
+      - id: b
+        text: "Argo CD cannot use a user that can write."
+        explanation: "It can use any valid credential."
+      - id: c
+        text: "The pull loop only needs to read, so a leaked credential cannot change the source of truth."
+        explanation: "Correct. The credential gets the smallest permission that does the job."
+      - id: d
+        text: "Gitea requires every user to be read-only."
+        explanation: "Gitea supports write access."
+    correct_option: c
+    explanation: "Correct. The credential gets the smallest permission that does the job."
+  - id: ats065-030-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Read the failure when a credential is wrong"
+    source_readings:
+      - sections/section-030/module-01/course-02-repository-credentials.md
+    prompt: |-
+      The repository Secret holds a wrong password. What does the `Application` show?
+    options:
+      - id: a
+        text: "`Synced`, using the last cached manifests with no error."
+        explanation: "The failure appears as a condition, not as `Synced`."
+      - id: b
+        text: "A `ComparisonError` or connection condition that names an authentication failure, and the running workload does not change."
+        explanation: "Correct. Nothing is applied while the repository cannot be read."
+      - id: c
+        text: "The workload is deleted."
+        explanation: "A repository failure does not delete the workload."
+      - id: d
+        text: "The Application is removed automatically."
+        explanation: "Argo CD does not remove it."
+    correct_option: b
+    explanation: "Correct. Nothing is applied while the repository cannot be read."
+  - id: ats065-030-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain the polling interval"
+    source_readings:
+      - sections/section-030/module-01/course-03-polling-webhooks-and-outages.md
+    prompt: |-
+      No webhook is set. A commit is pushed. When does Argo CD see it by default?
+    options:
+      - id: a
+        text: "Immediately, because Git notifies every client."
+        explanation: "Git does not notify clients without a configured webhook."
+      - id: b
+        text: "Within about three minutes, at the next repository poll."
+        explanation: "Correct. The default refresh interval is 3 minutes."
+      - id: c
+        text: "Only after a person restarts Argo CD."
+        explanation: "A restart is not needed."
+      - id: d
+        text: "After 24 hours."
+        explanation: "The default is far shorter."
+    correct_option: b
+    explanation: "Correct. The default refresh interval is 3 minutes."
+  - id: ats065-030-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain what a webhook changes"
+    source_readings:
+      - sections/section-030/module-01/course-03-polling-webhooks-and-outages.md
+    prompt: |-
+      What does the webhook to `argocd-server` change?
+    options:
+      - id: a
+        text: "It sends the manifests to the cluster."
+        explanation: "The webhook sends an event, not manifests."
+      - id: b
+        text: "It tells Argo CD that a push happened so it refreshes now instead of waiting for the poll."
+        explanation: "Correct. The webhook shortens the delay. Polling still works if the webhook fails."
+      - id: c
+        text: "It replaces the repository credential."
+        explanation: "The credential is still needed to read the repository."
+      - id: d
+        text: "It lets Gitea edit the cluster."
+        explanation: "The webhook does not give Gitea cluster access."
+    correct_option: b
+    explanation: "Correct. The webhook shortens the delay. Polling still works if the webhook fails."
+  - id: ats065-030-q08
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Reason about a repository outage"
+    source_readings:
+      - sections/section-030/module-01/course-03-polling-webhooks-and-outages.md
+    prompt: |-
+      The Git server is down for an hour. What happens to the running workload under pull delivery?
+    options:
+      - id: a
+        text: "It keeps running as last applied, and the loop resumes reconciliation when the repository returns."
+        explanation: "Correct. The desired state is not readable, but the live objects are not removed."
+      - id: b
+        text: "All pods are deleted."
+        explanation: "An outage does not delete anything."
+      - id: c
+        text: "Argo CD applies an empty state."
+        explanation: "It does not apply an empty state."
+      - id: d
+        text: "The cluster stops serving traffic."
+        explanation: "The workload does not depend on Git to serve traffic."
+    correct_option: a
+    explanation: "Correct. The desired state is not readable, but the live objects are not removed."
+  - id: ats065-030-q09
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Reason about the webhook as an optimisation"
+    source_readings:
+      - sections/section-030/module-01/course-03-polling-webhooks-and-outages.md
+    prompt: |-
+      A webhook is not delivered because of a network error. What is the correct statement?
+    options:
+      - id: a
+        text: "The change is lost forever."
+        explanation: "The poll finds the commit."
+      - id: b
+        text: "The system is broken until an operator re-sends the event."
+        explanation: "No re-send is required."
+      - id: c
+        text: "The change is found at the next poll, so the webhook only affects how fast it is seen."
+        explanation: "Correct. The webhook is an optimisation, and polling is the fallback."
+      - id: d
+        text: "Argo CD rolls back the previous commit."
+        explanation: "It does not roll back."
+    correct_option: c
+    explanation: "Correct. The webhook is an optimisation, and polling is the fallback."

@@ -1,24 +1,28 @@
 ---
 draft: true
 exam_objectives:
-- Continuously Reconciled
+  - Continuously Reconciled
 ---
-# Drift, Refresh, Ignore Rules And Reconciliation Patterns
+# Drift, Refresh And Reconciliation
 
-This module develops drift, Refresh, Ignore Rules And Reconciliation Patterns. Use the explanations to connect intended behavior with responsible components and observable evidence.
+Deploying once is not enough: the cluster changes after the deployment, and the agent must keep the two states aligned. This module explains drift, the difference between a refresh and a sync, the automated sync policy with self-heal and prune, ignore rules for fields that another controller owns, and the patterns that manage many applications from Git. It then practises each idea with Argo CD in a playground.
 
 ## Learning Goals
 
-- Distinguish refresh and comparison from synchronization.
-- Explain live drift and source-driven updates.
-- Evaluate ignore-difference settings and controller-owned fields.
-- Compare bootstrap composition with ApplicationSet-generated Applications.
+- Define drift and read the sync and health status of an `Application`.
+- Distinguish a refresh from a sync and automated sync from self-heal and prune.
+- Write a narrow ignore rule and explain why `RespectIgnoreDifferences` matters.
+- Describe app-of-apps and ApplicationSet, and diagnose a failure layer by layer.
 
 ## Before You Start
 
-Examples illustrate declared relationships and reasoning. No execution environment is required or claimed.
+You should know what an `Application`, a Deployment and a commit are. The hands-on steps use a playground with a kind cluster, Argo CD, a Git repository, `kubectl` and `git`. Technical terms are defined where they first appear.
 
 ## Reading Order
 
-1. Drift, Refresh, Ignore Rules And Reconciliation Patterns
-2. Summary
+1. Drift And Refresh
+2. Automated Sync, Self-Heal And Prune
+3. Ignore Rules And Reconciliation Patterns
+4. Summary
+
+<!-- astrona:playground -->

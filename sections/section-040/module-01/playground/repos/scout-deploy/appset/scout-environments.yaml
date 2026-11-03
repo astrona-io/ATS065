@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: scout-environments
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - environment: staging
+          - environment: production
+  template:
+    metadata:
+      name: 'scout-{{environment}}'
+    spec:
+      project: default
+      source:
+        repoURL: http://gitea-http.gitea.svc:3000/starfleet/scout-deploy.git
+        targetRevision: main
+        path: 'overlays/{{environment}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: 'starfleet-{{environment}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
