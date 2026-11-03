@@ -8,7 +8,7 @@ provenance: Original practice material written for this course; not official exa
 scope:
   type: section
   id: section-020
-  title: "Versions, References And Promotion"
+  title: "Versions, References, Audit And Promotion"
 questions:
   - id: ats065-020-q01
     type: single_choice
@@ -217,3 +217,233 @@ questions:
         explanation: "History keeps the old commit, so the value stays exposed."
     correct_option: b
     explanation: "Correct. The repository states the intent, and the value stays protected."
+  - id: ats065-020-q10
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Read what a commit contains"
+    source_readings:
+      - sections/section-020/module-02/course-01-what-the-history-records.md
+    prompt: |-
+      Which list names what a Git commit records?
+    options:
+      - id: a
+        text: "A snapshot of the files, the parent commit, the author, the committer and a message."
+        explanation: "A commit is a snapshot with metadata and a pointer to its parent."
+      - id: b
+        text: "Only the lines that changed, with no parent."
+        explanation: "A commit points to a snapshot and to its parent."
+      - id: c
+        text: "The cluster state at the time of the commit."
+        explanation: "Git has no knowledge of the cluster."
+      - id: d
+        text: "The result of the sync that followed."
+        explanation: "The sync result is recorded by the agent, not by Git."
+    correct_option: a
+    explanation: "Correct. A commit is a snapshot with metadata and a pointer to its parent."
+  - id: ats065-020-q11
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "State what history does not prove"
+    source_readings:
+      - sections/section-020/module-02/course-01-what-the-history-records.md
+    prompt: |-
+      A commit shows the author name `Dana Whit`. What does this prove when commits are not signed?
+    options:
+      - id: a
+        text: "That Dana Whit made and reviewed the change."
+        explanation: "The name is a claim and is not proven."
+      - id: b
+        text: "Nothing certain, because the author name is set by the person who makes the commit."
+        explanation: "Without a signature, anyone can set any name and email in their Git configuration."
+      - id: c
+        text: "That the change was deployed."
+        explanation: "Git does not record deployment."
+      - id: d
+        text: "That the change passed all tests."
+        explanation: "Tests are not recorded in the commit."
+    correct_option: b
+    explanation: "Correct. Without a signature, anyone can set any name and email in their Git configuration."
+  - id: ats065-020-q12
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Answer an audit question from history"
+    source_readings:
+      - sections/section-020/module-02/course-01-what-the-history-records.md
+    prompt: |-
+      Which command lists the commits that changed one file, with their diffs?
+    options:
+      - id: a
+        text: "`git status path/to/file`"
+        explanation: "This shows the working tree state."
+      - id: b
+        text: "`git remote -v`"
+        explanation: "This lists remotes."
+      - id: c
+        text: "`git log -p -- path/to/file`"
+        explanation: "The path after `--` limits the log to that file and `-p` shows the patch."
+      - id: d
+        text: "`git init path/to/file`"
+        explanation: "This creates a repository."
+    correct_option: c
+    explanation: "Correct. The path after `--` limits the log to that file and `-p` shows the patch."
+  - id: ats065-020-q13
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain what a signature proves"
+    source_readings:
+      - sections/section-020/module-02/course-02-signed-commits-and-tag-verification.md
+    prompt: |-
+      A commit has a valid signature. What does it show?
+    options:
+      - id: a
+        text: "That the change was reviewed by two people."
+        explanation: "Review is shown by the pull request, not by a signature."
+      - id: b
+        text: "That the change is correct."
+        explanation: "A signature says nothing about correctness."
+      - id: c
+        text: "That the commit is in the main branch."
+        explanation: "A signed commit can be on any branch."
+      - id: d
+        text: "That the holder of the signing key created the commit and that it was not changed afterwards."
+        explanation: "A signature binds the content to a key. It does not say the change was reviewed or good."
+    correct_option: d
+    explanation: "Correct. A signature binds the content to a key. It does not say the change was reviewed or good."
+  - id: ats065-020-q14
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Tell annotated tags from lightweight tags"
+    source_readings:
+      - sections/section-020/module-02/course-02-signed-commits-and-tag-verification.md
+    prompt: |-
+      How does an annotated tag differ from a lightweight tag?
+    options:
+      - id: a
+        text: "An annotated tag is its own object with tagger, date and message, and it can be signed. A lightweight tag is only a name for a commit."
+        explanation: "Only the annotated form carries data that can be shown and signed."
+      - id: b
+        text: "There is no difference."
+        explanation: "They are stored differently."
+      - id: c
+        text: "A lightweight tag can be signed and an annotated tag cannot."
+        explanation: "It is the reverse."
+      - id: d
+        text: "An annotated tag moves with each commit."
+        explanation: "Tags do not move on their own."
+    correct_option: a
+    explanation: "Correct. Only the annotated form carries data that can be shown and signed."
+  - id: ats065-020-q15
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Verify a signed tag"
+    source_readings:
+      - sections/section-020/module-02/course-02-signed-commits-and-tag-verification.md
+    prompt: |-
+      Which command checks the signature of the tag `v1.4.0`?
+    options:
+      - id: a
+        text: "`git tag -d v1.4.0`"
+        explanation: "This deletes the tag."
+      - id: b
+        text: "`git tag -v v1.4.0`"
+        explanation: "`git tag -v` verifies a signed tag."
+      - id: c
+        text: "`git tag -l v1.4.0`"
+        explanation: "This lists tags."
+      - id: d
+        text: "`git push v1.4.0`"
+        explanation: "This is not a valid push."
+    correct_option: b
+    explanation: "Correct. `git tag -v` verifies a signed tag."
+  - id: ats065-020-q16
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Use review and branch protection"
+    source_readings:
+      - sections/section-020/module-02/course-03-review-codeowners-and-branch-protection.md
+    prompt: |-
+      Which settings on the branch that the agent follows keep an unreviewed change out of production?
+    options:
+      - id: a
+        text: "Allow direct pushes from every maintainer so that fixes are fast."
+        explanation: "This removes the review step."
+      - id: b
+        text: "Make the branch public."
+        explanation: "Visibility does not control who can change it."
+      - id: c
+        text: "Require a pull request with approvals, and block direct pushes and force pushes."
+        explanation: "Because the agent applies what the branch contains, the branch is the control point."
+      - id: d
+        text: "Turn on Git compression."
+        explanation: "Compression does not affect review."
+    correct_option: c
+    explanation: "Correct. Because the agent applies what the branch contains, the branch is the control point."
+  - id: ats065-020-q17
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain CODEOWNERS"
+    source_readings:
+      - sections/section-020/module-02/course-03-review-codeowners-and-branch-protection.md
+    prompt: |-
+      What does a `CODEOWNERS` file do?
+    options:
+      - id: a
+        text: "It encrypts files for the named owners."
+        explanation: "It does not encrypt anything."
+      - id: b
+        text: "It chooses which cluster a path deploys to."
+        explanation: "The Application chooses the destination."
+      - id: c
+        text: "It runs the sync for the named owners."
+        explanation: "It is a review rule, not a sync rule."
+      - id: d
+        text: "It names the people or teams who must review changes to matching paths, and the host can require their approval."
+        explanation: "Owners are matched by path, for example `overlays/production/`."
+    correct_option: d
+    explanation: "Correct. Owners are matched by path, for example `overlays/production/`."
+  - id: ats065-020-q18
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Predict the effect of a force push"
+    source_readings:
+      - sections/section-020/module-02/course-04-rewriting-history.md
+    prompt: |-
+      A force push replaces a commit on the followed branch. What does the agent do?
+    options:
+      - id: a
+        text: "It resolves the branch to the new commit and applies that state, and the replaced commit can no longer be reached from the branch."
+        explanation: "The agent follows the branch name. Rewritten history changes what the name points to."
+      - id: b
+        text: "It keeps the old commit forever."
+        explanation: "The old commit is not reachable from the branch afterwards."
+      - id: c
+        text: "It stops and waits for a person."
+        explanation: "It follows the branch to the new commit."
+      - id: d
+        text: "It deletes the Application."
+        explanation: "A force push does not delete Applications."
+    correct_option: a
+    explanation: "Correct. The agent follows the branch name. Rewritten history changes what the name points to."
+  - id: ats065-020-q19
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Roll back without rewriting"
+    source_readings:
+      - sections/section-020/module-02/course-04-rewriting-history.md
+    prompt: |-
+      Which command rolls back a bad commit and keeps the history intact?
+    options:
+      - id: a
+        text: "`git reset --hard <earlier>` followed by a force push"
+        explanation: "This rewrites the history."
+      - id: b
+        text: "`git revert <commit>`"
+        explanation: "A revert adds a new commit that undoes the change, so the record of both stays."
+      - id: c
+        text: "`git commit --amend` on the shared branch"
+        explanation: "This rewrites a published commit."
+      - id: d
+        text: "`git rebase -i` on the shared branch"
+        explanation: "This rewrites published commits."
+    correct_option: b
+    explanation: "Correct. A revert adds a new commit that undoes the change, so the record of both stays."

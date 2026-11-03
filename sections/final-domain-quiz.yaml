@@ -286,3 +286,555 @@ questions:
         explanation: "Correct."
     correct_option: d
     explanation: "Correct."
+  - id: ats065-final-q13
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Tell spec from status"
+    source_readings:
+      - sections/section-010/module-02/course-01-spec-status-and-the-declarative-api.md
+    prompt: |-
+      A Deployment has a `spec` and a `status`. Which statement is correct?
+    options:
+      - id: a
+        text: "Both halves are written by the person who applies the file."
+        explanation: "A person writes the `spec`. Controllers fill in `status`."
+      - id: b
+        text: "The `spec` holds the desired state that people write, and the `status` holds the observed state that controllers write."
+        explanation: "The two halves have different writers. A controller reports what it sees in `status`."
+      - id: c
+        text: "The `status` holds the desired state and the `spec` holds the observed state."
+        explanation: "This reverses the two halves."
+      - id: d
+        text: "The `status` is the part that belongs in the Git repository."
+        explanation: "Git holds the desired state. Observed state is reported by the cluster and does not belong in the repository."
+    correct_option: b
+    explanation: "Correct. The two halves have different writers. A controller reports what it sees in `status`."
+  - id: ats065-final-q14
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain idempotence"
+    source_readings:
+      - sections/section-010/module-02/course-02-create-apply-replace-and-idempotence.md
+    prompt: |-
+      A script runs `kubectl create -f deploy.yaml` twice. What happens on the second run?
+    options:
+      - id: a
+        text: "The object is updated to match the file."
+        explanation: "That is the behavior of `apply`, not `create`."
+      - id: b
+        text: "The object is deleted and created again."
+        explanation: "`create` never deletes an object."
+      - id: c
+        text: "The command fails because the object already exists."
+        explanation: "`create` is not idempotent. The second request names an object that exists, so the API returns an error."
+      - id: d
+        text: "The command succeeds and changes nothing."
+        explanation: "That would be idempotent. `create` returns an AlreadyExists error."
+    correct_option: c
+    explanation: "Correct. `create` is not idempotent. The second request names an object that exists, so the API returns an error."
+  - id: ats065-final-q15
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Preview a change"
+    source_readings:
+      - sections/section-010/module-02/course-02-create-apply-replace-and-idempotence.md
+    prompt: |-
+      Which command shows what `apply` would change on the server without writing anything?
+    options:
+      - id: a
+        text: "`kubectl get -f deploy.yaml -o yaml`"
+        explanation: "This prints the live object and compares nothing."
+      - id: b
+        text: "`kubectl create -f deploy.yaml`"
+        explanation: "This writes the object."
+      - id: c
+        text: "`kubectl replace -f deploy.yaml`"
+        explanation: "This writes the whole object and is not a preview."
+      - id: d
+        text: "`kubectl diff -f deploy.yaml`"
+        explanation: "`kubectl diff` sends the object to the server dry run and prints the difference."
+    correct_option: d
+    explanation: "Correct. `kubectl diff` sends the object to the server dry run and prints the difference."
+  - id: ats065-final-q16
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain field managers"
+    source_readings:
+      - sections/section-010/module-02/course-03-server-side-apply-and-field-managers.md
+    prompt: |-
+      Two tools set `spec.replicas` on the same Deployment with server-side apply under different field manager names, with different values. What does the second request get?
+    options:
+      - id: a
+        text: "A conflict error, unless it uses force to take ownership of the field."
+        explanation: "Server-side apply records which manager owns each field in `managedFields` and reports a conflict when another manager owns a field being set to a different value."
+      - id: b
+        text: "A silent overwrite, because the last writer always wins."
+        explanation: "Server-side apply detects the conflict instead of overwriting."
+      - id: c
+        text: "Nothing, because field managers are only labels."
+        explanation: "They are tracked in `managedFields` and used for conflicts."
+      - id: d
+        text: "A deleted Deployment."
+        explanation: "A conflict does not delete the object."
+    correct_option: a
+    explanation: "Correct. Server-side apply records which manager owns each field in `managedFields` and reports a conflict when another manager owns a field being set to a different value."
+  - id: ats065-final-q17
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Declare Helm values in an Application"
+    source_readings:
+      - sections/section-010/module-02/course-04-helm-and-kustomize-as-renderers.md
+    prompt: |-
+      Where does an Argo CD `Application` set values for a Helm chart without a separate values file?
+    options:
+      - id: a
+        text: "In `spec.destination.values`."
+        explanation: "The destination names the cluster and namespace."
+      - id: b
+        text: "In `spec.source.helm.valuesObject`."
+        explanation: "The `valuesObject` field holds the values as YAML inside the `Application`, so they are declared in Git with the Application."
+      - id: c
+        text: "In the status of the `Application`."
+        explanation: "The status is written by the controller."
+      - id: d
+        text: "In the `kubectl` command that creates the Application."
+        explanation: "Values are declared in the object, not typed on a command line."
+    correct_option: b
+    explanation: "Correct. The `valuesObject` field holds the values as YAML inside the `Application`, so they are declared in Git with the Application."
+  - id: ats065-final-q18
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Pin what a render depends on"
+    source_readings:
+      - sections/section-010/module-02/course-04-helm-and-kustomize-as-renderers.md
+    prompt: |-
+      Why should a chart version or an image tag be pinned to an exact value in the declared state?
+    options:
+      - id: a
+        text: "Because Helm refuses to render unpinned values."
+        explanation: "Helm renders them. The risk is a changing result."
+      - id: b
+        text: "Because pinned versions render faster."
+        explanation: "The reason is repeatability, not speed."
+      - id: c
+        text: "So the same commit renders the same manifests each time."
+        explanation: "A moving reference changes the render without a new commit, which breaks the link between the commit and what runs."
+      - id: d
+        text: "Because Argo CD cannot read unpinned references."
+        explanation: "It can read them. The result is not repeatable."
+    correct_option: c
+    explanation: "Correct. A moving reference changes the render without a new commit, which breaks the link between the commit and what runs."
+  - id: ats065-final-q19
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Read what a commit contains"
+    source_readings:
+      - sections/section-020/module-02/course-01-what-the-history-records.md
+    prompt: |-
+      Which list names what a Git commit records?
+    options:
+      - id: a
+        text: "Only the lines that changed, with no parent."
+        explanation: "A commit points to a snapshot and to its parent."
+      - id: b
+        text: "The cluster state at the time of the commit."
+        explanation: "Git has no knowledge of the cluster."
+      - id: c
+        text: "The result of the sync that followed."
+        explanation: "The sync result is recorded by the agent, not by Git."
+      - id: d
+        text: "A snapshot of the files, the parent commit, the author, the committer and a message."
+        explanation: "A commit is a snapshot with metadata and a pointer to its parent."
+    correct_option: d
+    explanation: "Correct. A commit is a snapshot with metadata and a pointer to its parent."
+  - id: ats065-final-q20
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Answer an audit question from history"
+    source_readings:
+      - sections/section-020/module-02/course-01-what-the-history-records.md
+    prompt: |-
+      Which command lists the commits that changed one file, with their diffs?
+    options:
+      - id: a
+        text: "`git log -p -- path/to/file`"
+        explanation: "The path after `--` limits the log to that file and `-p` shows the patch."
+      - id: b
+        text: "`git status path/to/file`"
+        explanation: "This shows the working tree state."
+      - id: c
+        text: "`git remote -v`"
+        explanation: "This lists remotes."
+      - id: d
+        text: "`git init path/to/file`"
+        explanation: "This creates a repository."
+    correct_option: a
+    explanation: "Correct. The path after `--` limits the log to that file and `-p` shows the patch."
+  - id: ats065-final-q21
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Tell annotated tags from lightweight tags"
+    source_readings:
+      - sections/section-020/module-02/course-02-signed-commits-and-tag-verification.md
+    prompt: |-
+      How does an annotated tag differ from a lightweight tag?
+    options:
+      - id: a
+        text: "There is no difference."
+        explanation: "They are stored differently."
+      - id: b
+        text: "An annotated tag is its own object with tagger, date and message, and it can be signed. A lightweight tag is only a name for a commit."
+        explanation: "Only the annotated form carries data that can be shown and signed."
+      - id: c
+        text: "A lightweight tag can be signed and an annotated tag cannot."
+        explanation: "It is the reverse."
+      - id: d
+        text: "An annotated tag moves with each commit."
+        explanation: "Tags do not move on their own."
+    correct_option: b
+    explanation: "Correct. Only the annotated form carries data that can be shown and signed."
+  - id: ats065-final-q22
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Use review and branch protection"
+    source_readings:
+      - sections/section-020/module-02/course-03-review-codeowners-and-branch-protection.md
+    prompt: |-
+      Which settings on the branch that the agent follows keep an unreviewed change out of production?
+    options:
+      - id: a
+        text: "Allow direct pushes from every maintainer so that fixes are fast."
+        explanation: "This removes the review step."
+      - id: b
+        text: "Make the branch public."
+        explanation: "Visibility does not control who can change it."
+      - id: c
+        text: "Require a pull request with approvals, and block direct pushes and force pushes."
+        explanation: "Because the agent applies what the branch contains, the branch is the control point."
+      - id: d
+        text: "Turn on Git compression."
+        explanation: "Compression does not affect review."
+    correct_option: c
+    explanation: "Correct. Because the agent applies what the branch contains, the branch is the control point."
+  - id: ats065-final-q23
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Predict the effect of a force push"
+    source_readings:
+      - sections/section-020/module-02/course-04-rewriting-history.md
+    prompt: |-
+      A force push replaces a commit on the followed branch. What does the agent do?
+    options:
+      - id: a
+        text: "It keeps the old commit forever."
+        explanation: "The old commit is not reachable from the branch afterwards."
+      - id: b
+        text: "It stops and waits for a person."
+        explanation: "It follows the branch to the new commit."
+      - id: c
+        text: "It deletes the Application."
+        explanation: "A force push does not delete Applications."
+      - id: d
+        text: "It resolves the branch to the new commit and applies that state, and the replaced commit can no longer be reached from the branch."
+        explanation: "The agent follows the branch name. Rewritten history changes what the name points to."
+    correct_option: d
+    explanation: "Correct. The agent follows the branch name. Rewritten history changes what the name points to."
+  - id: ats065-final-q24
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Roll back without rewriting"
+    source_readings:
+      - sections/section-020/module-02/course-04-rewriting-history.md
+    prompt: |-
+      Which command rolls back a bad commit and keeps the history intact?
+    options:
+      - id: a
+        text: "`git revert <commit>`"
+        explanation: "A revert adds a new commit that undoes the change, so the record of both stays."
+      - id: b
+        text: "`git reset --hard <earlier>` followed by a force push"
+        explanation: "This rewrites the history."
+      - id: c
+        text: "`git commit --amend` on the shared branch"
+        explanation: "This rewrites a published commit."
+      - id: d
+        text: "`git rebase -i` on the shared branch"
+        explanation: "This rewrites published commits."
+    correct_option: a
+    explanation: "Correct. A revert adds a new commit that undoes the change, so the record of both stays."
+  - id: ats065-final-q25
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Name Argo CD components"
+    source_readings:
+      - sections/section-030/module-02/course-01-argo-cd-components.md
+    prompt: |-
+      Which Argo CD component renders manifests from the Git repository?
+    options:
+      - id: a
+        text: "The application controller."
+        explanation: "It compares and applies. It asks the repository server for the render."
+      - id: b
+        text: "The repository server."
+        explanation: "It clones the repository and runs the renderer, for example Helm or Kustomize."
+      - id: c
+        text: "The Redis cache."
+        explanation: "It caches data and renders nothing."
+      - id: d
+        text: "The Dex server."
+        explanation: "It handles login and renders nothing."
+    correct_option: b
+    explanation: "Correct. It clones the repository and runs the renderer, for example Helm or Kustomize."
+  - id: ats065-final-q26
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Predict a component failure"
+    source_readings:
+      - sections/section-030/module-02/course-01-argo-cd-components.md
+    prompt: |-
+      The repository server of Argo CD stops. What is the effect on workloads that are already running?
+    options:
+      - id: a
+        text: "They are deleted at once."
+        explanation: "A stopped controller does not delete workloads."
+      - id: b
+        text: "They are rolled back to the last Git commit."
+        explanation: "Nothing performs a rollback without the agent."
+      - id: c
+        text: "They keep running. New renders and so new changes are not delivered until it returns."
+        explanation: "The agent is a control loop. Stopping it stops delivery and does not stop the workloads."
+      - id: d
+        text: "They move to another cluster."
+        explanation: "Argo CD does not move workloads."
+    correct_option: c
+    explanation: "Correct. The agent is a control loop. Stopping it stops delivery and does not stop the workloads."
+  - id: ats065-final-q27
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Name Flux controllers"
+    source_readings:
+      - sections/section-030/module-02/course-02-flux-controllers-and-the-comparison.md
+    prompt: |-
+      Which Flux controller fetches artifacts from Git and makes them available to other controllers?
+    options:
+      - id: a
+        text: "The kustomize controller."
+        explanation: "It applies the artifact."
+      - id: b
+        text: "The notification controller."
+        explanation: "It sends alerts and receives webhooks."
+      - id: c
+        text: "The helm controller."
+        explanation: "It installs Helm releases."
+      - id: d
+        text: "The source controller."
+        explanation: "It produces artifacts that the other controllers consume."
+    correct_option: d
+    explanation: "Correct. It produces artifacts that the other controllers consume."
+  - id: ats065-final-q28
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Place credentials"
+    source_readings:
+      - sections/section-030/module-02/course-03-network-direction-and-cluster-credentials.md
+    prompt: |-
+      Which credential does a pull-based cluster need for the Git repository?
+    options:
+      - id: a
+        text: "A read credential for the repository, stored in the cluster."
+        explanation: "The agent only reads. The cluster credentials stay inside the cluster."
+      - id: b
+        text: "A cluster-admin kubeconfig stored in the CI system."
+        explanation: "This is the push design."
+      - id: c
+        text: "A write token for the Git host."
+        explanation: "The agent does not write to Git."
+      - id: d
+        text: "No credential, for private repositories."
+        explanation: "A private repository needs a credential."
+    correct_option: a
+    explanation: "Correct. The agent only reads. The cluster credentials stay inside the cluster."
+  - id: ats065-final-q29
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Read the agent permissions"
+    source_readings:
+      - sections/section-030/module-02/course-04-the-permissions-of-the-agent.md
+    prompt: |-
+      In the default Argo CD installation, the application controller can create and delete almost any object in the cluster. What follows from this?
+    options:
+      - id: a
+        text: "Nothing, because Git review has no effect on the cluster."
+        explanation: "Review controls what the agent applies."
+      - id: b
+        text: "A commit to the followed branch can change almost anything, so the branch and the project need tight controls."
+        explanation: "The rights of the agent are the rights of anyone who can merge to its branch."
+      - id: c
+        text: "The cluster is safe because Argo CD only reads."
+        explanation: "It applies changes with its own rights."
+      - id: d
+        text: "Only the CI system can change the cluster."
+        explanation: "In the pull design, the agent does."
+    correct_option: b
+    explanation: "Correct. The rights of the agent are the rights of anyone who can merge to its branch."
+  - id: ats065-final-q30
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Narrow the permissions"
+    source_readings:
+      - sections/section-030/module-02/course-04-the-permissions-of-the-agent.md
+    prompt: |-
+      Which setting limits which namespaces and clusters an Application can deploy to?
+    options:
+      - id: a
+        text: "The `replicas` field of the Deployment."
+        explanation: "It sets the pod count."
+      - id: b
+        text: "The `nodeSelector` of the controller."
+        explanation: "It places pods and sets no permissions."
+      - id: c
+        text: "The `destinations` list of the `AppProject`."
+        explanation: "A project restricts source repositories, destinations and resource kinds."
+      - id: d
+        text: "The `imagePullPolicy` of the pods."
+        explanation: "It controls image pulls."
+    correct_option: c
+    explanation: "Correct. A project restricts source repositories, destinations and resource kinds."
+  - id: ats065-final-q31
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Read sync and health"
+    source_readings:
+      - sections/section-040/module-02/course-01-sync-status-and-health-status.md
+    prompt: |-
+      An Application shows `Synced` and `Degraded`. What does this mean?
+    options:
+      - id: a
+        text: "The cluster differs from Git, and everything works."
+        explanation: "That is `OutOfSync` and `Healthy`."
+      - id: b
+        text: "Git cannot be read."
+        explanation: "That would give `Unknown` for the sync status."
+      - id: c
+        text: "The Application is deleted."
+        explanation: "A deleted Application has no status."
+      - id: d
+        text: "The cluster matches Git, and one or more resources are not working."
+        explanation: "Sync status compares Git and the cluster. Health status asks whether the resources work."
+    correct_option: d
+    explanation: "Correct. Sync status compares Git and the cluster. Health status asks whether the resources work."
+  - id: ats065-final-q32
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Aggregate health"
+    source_readings:
+      - sections/section-040/module-02/course-01-sync-status-and-health-status.md
+    prompt: |-
+      An Application has 5 healthy resources and 1 degraded Deployment. What is the health of the Application?
+    options:
+      - id: a
+        text: "`Degraded`, because the Application takes the worst health of its resources."
+        explanation: "One failed resource is enough."
+      - id: b
+        text: "`Healthy`, because most resources are healthy."
+        explanation: "It is not a majority vote."
+      - id: c
+        text: "`Progressing`, always."
+        explanation: "The value follows the worst resource."
+      - id: d
+        text: "`Missing`, because one resource failed."
+        explanation: "`Missing` means the object does not exist."
+    correct_option: a
+    explanation: "Correct. One failed resource is enough."
+  - id: ats065-final-q33
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Order the phases"
+    source_readings:
+      - sections/section-040/module-02/course-02-sync-phases-waves-and-hooks.md
+    prompt: |-
+      Which order is correct for a sync that succeeds?
+    options:
+      - id: a
+        text: "`Sync`, `PreSync`, `PostSync`."
+        explanation: "PreSync runs first."
+      - id: b
+        text: "`PreSync`, `Sync`, `PostSync`."
+        explanation: "`SyncFail` runs only when the sync fails."
+      - id: c
+        text: "`PostSync`, `Sync`, `PreSync`."
+        explanation: "This reverses the order."
+      - id: d
+        text: "`PreSync`, `PostSync`, `Sync`."
+        explanation: "PostSync runs after the main apply."
+    correct_option: b
+    explanation: "Correct. `SyncFail` runs only when the sync fails."
+  - id: ats065-final-q34
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Order resources with waves"
+    source_readings:
+      - sections/section-040/module-02/course-02-sync-phases-waves-and-hooks.md
+    prompt: |-
+      A ConfigMap has sync wave `-1` and a Deployment has the default wave. In what order does Argo CD apply them?
+    options:
+      - id: a
+        text: "The Deployment first."
+        explanation: "The lower wave goes first."
+      - id: b
+        text: "Both at once."
+        explanation: "Different waves are applied in order."
+      - id: c
+        text: "The ConfigMap first, then the Deployment after the ConfigMap is healthy."
+        explanation: "Lower waves go first, the default is 0, and Argo CD waits for health between waves."
+      - id: d
+        text: "In alphabetical order of their names."
+        explanation: "Names order resources only inside the same wave."
+    correct_option: c
+    explanation: "Correct. Lower waves go first, the default is 0, and Argo CD waits for health between waves."
+  - id: ats065-final-q35
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Configure a retry"
+    source_readings:
+      - sections/section-040/module-02/course-03-retries-and-failed-syncs.md
+    prompt: |-
+      With `limit: 5`, `duration: 10s`, `factor: 2` and `maxDuration: 3m`, what are the waits before the retries?
+    options:
+      - id: a
+        text: "10 seconds each time."
+        explanation: "The factor multiplies the wait."
+      - id: b
+        text: "10, 20, 40, 80 and 180 seconds."
+        explanation: "160 seconds is below the cap, so it is not raised."
+      - id: c
+        text: "5 retries with no wait."
+        explanation: "The backoff sets the wait."
+      - id: d
+        text: "10, 20, 40, 80 and 160 seconds."
+        explanation: "Each wait is multiplied by the factor, and none reaches the cap of three minutes."
+    correct_option: d
+    explanation: "Correct. Each wait is multiplied by the factor, and none reaches the cap of three minutes."
+  - id: ats065-final-q36
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Find the cause of a failure"
+    source_readings:
+      - sections/section-040/module-02/course-04-observing-reconciliation.md
+    prompt: |-
+      An Application shows sync status `Unknown` and a condition of type `ComparisonError`. Where should you look next?
+    options:
+      - id: a
+        text: "The message of the condition, then the repository server log, for a render or Git error."
+        explanation: "Comparison errors come from fetching or rendering the desired state."
+      - id: b
+        text: "The nodes of the cluster, for disk space."
+        explanation: "The error is about the comparison."
+      - id: c
+        text: "The Ingress controller log."
+        explanation: "It handles traffic, not rendering."
+      - id: d
+        text: "Nothing. Unknown means the Application is healthy."
+        explanation: "Unknown is a failure to compare."
+    correct_option: a
+    explanation: "Correct. Comparison errors come from fetching or rendering the desired state."

@@ -8,7 +8,7 @@ provenance: Original practice material written for this course; not official exa
 scope:
   type: section
   id: section-040
-  title: "Drift, Refresh And Reconciliation"
+  title: "Drift, Refresh, Health And Reconciliation"
 questions:
   - id: ats065-040-q01
     type: single_choice
@@ -217,3 +217,233 @@ questions:
         explanation: "This leaves the declarative model."
     correct_option: b
     explanation: "Correct. The policy is set on each Application."
+  - id: ats065-040-q10
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Read sync and health"
+    source_readings:
+      - sections/section-040/module-02/course-01-sync-status-and-health-status.md
+    prompt: |-
+      An Application shows `Synced` and `Degraded`. What does this mean?
+    options:
+      - id: a
+        text: "The cluster matches Git, and one or more resources are not working."
+        explanation: "Sync status compares Git and the cluster. Health status asks whether the resources work."
+      - id: b
+        text: "The cluster differs from Git, and everything works."
+        explanation: "That is `OutOfSync` and `Healthy`."
+      - id: c
+        text: "Git cannot be read."
+        explanation: "That would give `Unknown` for the sync status."
+      - id: d
+        text: "The Application is deleted."
+        explanation: "A deleted Application has no status."
+    correct_option: a
+    explanation: "Correct. Sync status compares Git and the cluster. Health status asks whether the resources work."
+  - id: ats065-040-q11
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Name the sync statuses"
+    source_readings:
+      - sections/section-040/module-02/course-01-sync-status-and-health-status.md
+    prompt: |-
+      Which values can the sync status of an Application have?
+    options:
+      - id: a
+        text: "`Healthy`, `Degraded` and `Missing`."
+        explanation: "These are health values."
+      - id: b
+        text: "`Synced`, `OutOfSync` and `Unknown`."
+        explanation: "These are the three values of the comparison."
+      - id: c
+        text: "`Pending`, `Running` and `Failed`."
+        explanation: "These are not sync statuses."
+      - id: d
+        text: "`Ready` and `NotReady`."
+        explanation: "These are Flux condition values."
+    correct_option: b
+    explanation: "Correct. These are the three values of the comparison."
+  - id: ats065-040-q12
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Aggregate health"
+    source_readings:
+      - sections/section-040/module-02/course-01-sync-status-and-health-status.md
+    prompt: |-
+      An Application has 5 healthy resources and 1 degraded Deployment. What is the health of the Application?
+    options:
+      - id: a
+        text: "`Healthy`, because most resources are healthy."
+        explanation: "It is not a majority vote."
+      - id: b
+        text: "`Progressing`, always."
+        explanation: "The value follows the worst resource."
+      - id: c
+        text: "`Degraded`, because the Application takes the worst health of its resources."
+        explanation: "One failed resource is enough."
+      - id: d
+        text: "`Missing`, because one resource failed."
+        explanation: "`Missing` means the object does not exist."
+    correct_option: c
+    explanation: "Correct. One failed resource is enough."
+  - id: ats065-040-q13
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Add a custom health check"
+    source_readings:
+      - sections/section-040/module-02/course-01-sync-status-and-health-status.md
+    prompt: |-
+      A custom resource always shows as healthy as soon as it exists, even when its controller reports an error. How is this fixed?
+    options:
+      - id: a
+        text: "Add an annotation `health: false` to the Application."
+        explanation: "No such annotation exists."
+      - id: b
+        text: "Delete the custom resource definition."
+        explanation: "This removes the type."
+      - id: c
+        text: "Increase the `replicas` of the controller."
+        explanation: "The number of replicas does not change health rules."
+      - id: d
+        text: "Add a custom health check in Lua to `argocd-cm` that reads the `status` of the resource."
+        explanation: "Without a check, Argo CD only knows that the object exists."
+    correct_option: d
+    explanation: "Correct. Without a check, Argo CD only knows that the object exists."
+  - id: ats065-040-q14
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Order the phases"
+    source_readings:
+      - sections/section-040/module-02/course-02-sync-phases-waves-and-hooks.md
+    prompt: |-
+      Which order is correct for a sync that succeeds?
+    options:
+      - id: a
+        text: "`PreSync`, `Sync`, `PostSync`."
+        explanation: "`SyncFail` runs only when the sync fails."
+      - id: b
+        text: "`Sync`, `PreSync`, `PostSync`."
+        explanation: "PreSync runs first."
+      - id: c
+        text: "`PostSync`, `Sync`, `PreSync`."
+        explanation: "This reverses the order."
+      - id: d
+        text: "`PreSync`, `PostSync`, `Sync`."
+        explanation: "PostSync runs after the main apply."
+    correct_option: a
+    explanation: "Correct. `SyncFail` runs only when the sync fails."
+  - id: ats065-040-q15
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Stop a sync with a hook"
+    source_readings:
+      - sections/section-040/module-02/course-02-sync-phases-waves-and-hooks.md
+    prompt: |-
+      A `PreSync` hook Job fails. What happens to the main apply?
+    options:
+      - id: a
+        text: "It starts anyway."
+        explanation: "A failed PreSync hook stops the sync."
+      - id: b
+        text: "It does not start, so the running workload stays unchanged."
+        explanation: "A failed PreSync hook fails the sync before anything is applied."
+      - id: c
+        text: "It applies half of the resources."
+        explanation: "Nothing in the Sync phase starts."
+      - id: d
+        text: "It is retried forever without a retry policy."
+        explanation: "Retries need a policy."
+    correct_option: b
+    explanation: "Correct. A failed PreSync hook fails the sync before anything is applied."
+  - id: ats065-040-q16
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Order resources with waves"
+    source_readings:
+      - sections/section-040/module-02/course-02-sync-phases-waves-and-hooks.md
+    prompt: |-
+      A ConfigMap has sync wave `-1` and a Deployment has the default wave. In what order does Argo CD apply them?
+    options:
+      - id: a
+        text: "The Deployment first."
+        explanation: "The lower wave goes first."
+      - id: b
+        text: "Both at once."
+        explanation: "Different waves are applied in order."
+      - id: c
+        text: "The ConfigMap first, then the Deployment after the ConfigMap is healthy."
+        explanation: "Lower waves go first, the default is 0, and Argo CD waits for health between waves."
+      - id: d
+        text: "In alphabetical order of their names."
+        explanation: "Names order resources only inside the same wave."
+    correct_option: c
+    explanation: "Correct. Lower waves go first, the default is 0, and Argo CD waits for health between waves."
+  - id: ats065-040-q17
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Clean up a hook"
+    source_readings:
+      - sections/section-040/module-02/course-02-sync-phases-waves-and-hooks.md
+    prompt: |-
+      Which delete policy removes a hook Job after it succeeds?
+    options:
+      - id: a
+        text: "`HookFailed`"
+        explanation: "This removes it after a failure."
+      - id: b
+        text: "`BeforeHookCreation`"
+        explanation: "This removes the previous one before the next run."
+      - id: c
+        text: "`Never`"
+        explanation: "This is not a delete policy value."
+      - id: d
+        text: "`HookSucceeded`"
+        explanation: "`HookFailed` removes it after a failure and `BeforeHookCreation` removes the old one before a new run."
+    correct_option: d
+    explanation: "Correct. `HookFailed` removes it after a failure and `BeforeHookCreation` removes the old one before a new run."
+  - id: ats065-040-q18
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Configure a retry"
+    source_readings:
+      - sections/section-040/module-02/course-03-retries-and-failed-syncs.md
+    prompt: |-
+      With `limit: 5`, `duration: 10s`, `factor: 2` and `maxDuration: 3m`, what are the waits before the retries?
+    options:
+      - id: a
+        text: "10, 20, 40, 80 and 160 seconds."
+        explanation: "Each wait is multiplied by the factor, and none reaches the cap of three minutes."
+      - id: b
+        text: "10 seconds each time."
+        explanation: "The factor multiplies the wait."
+      - id: c
+        text: "10, 20, 40, 80 and 180 seconds."
+        explanation: "160 seconds is below the cap, so it is not raised."
+      - id: d
+        text: "5 retries with no wait."
+        explanation: "The backoff sets the wait."
+    correct_option: a
+    explanation: "Correct. Each wait is multiplied by the factor, and none reaches the cap of three minutes."
+  - id: ats065-040-q19
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Find the cause of a failure"
+    source_readings:
+      - sections/section-040/module-02/course-04-observing-reconciliation.md
+    prompt: |-
+      An Application shows sync status `Unknown` and a condition of type `ComparisonError`. Where should you look next?
+    options:
+      - id: a
+        text: "The nodes of the cluster, for disk space."
+        explanation: "The error is about the comparison."
+      - id: b
+        text: "The message of the condition, then the repository server log, for a render or Git error."
+        explanation: "Comparison errors come from fetching or rendering the desired state."
+      - id: c
+        text: "The Ingress controller log."
+        explanation: "It handles traffic, not rendering."
+      - id: d
+        text: "Nothing. Unknown means the Application is healthy."
+        explanation: "Unknown is a failure to compare."
+    correct_option: b
+    explanation: "Correct. Comparison errors come from fetching or rendering the desired state."

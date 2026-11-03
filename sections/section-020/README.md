@@ -4,9 +4,9 @@ exam_objectives:
 ---
 # Versioned and Immutable
 
-This section covers the CGOA objective Versioned and Immutable. It has one module, Versions, References And Promotion, with a playground, a graded lab, a capstone lab and a quiz. Argo CD is the reconciler and an in-cluster Gitea server is plumbing only. The labs and playgrounds were built without being run.
+This section covers the CGOA objective Versioned and Immutable. It has two modules, Versions, References And Promotion and Git History, Audit And Change Control, each with a playground and a graded lab, plus a capstone lab and a quiz. Argo CD is the reconciler and an in-cluster Gitea server is plumbing only. The labs and playgrounds were built without being run.
 
-Read the landing page, the three parts and the summary in order. The graded lab follows part 2, and the capstone closes the section. The quiz comes last.
+Read each module in order: the landing page, the parts and the summary. Each graded lab follows the part that prepares it, and the capstone closes the section. The quiz comes last.
 
 ## Learning Outcomes
 
@@ -14,3 +14,7 @@ Read the landing page, the three parts and the summary in order. The graded lab 
 - Pin an Application, roll back with a revert commit and use history as an audit record.
 - Promote an immutable artifact by a reviewed change and keep secrets out of plain text in Git.
 - Promote a release to production by a tag.
+- Answer audit questions from commits, authors and tags.
+- Explain what signed commits and tags prove and what they do not.
+- Use review, CODEOWNERS and branch protection as the control point.
+- Explain what rewriting history does to an agent that follows a branch.

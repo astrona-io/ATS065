@@ -98,6 +98,43 @@ modules:
         path: sections/section-010/module-01/course-04-summary.md
 
       - type: reading
+        title: "Declarative Formats, Idempotence And Apply Semantics"
+        path: sections/section-010/module-02/course.md
+      - type: reading
+        title: "Spec, Status And The Declarative API"
+        path: sections/section-010/module-02/course-01-spec-status-and-the-declarative-api.md
+      - type: reading
+        title: "Create, Apply, Replace And Idempotence"
+        path: sections/section-010/module-02/course-02-create-apply-replace-and-idempotence.md
+      - type: reading
+        title: "Server-Side Apply And Field Managers"
+        path: sections/section-010/module-02/course-03-server-side-apply-and-field-managers.md
+      - type: reading
+        title: "Helm And Kustomize As Renderers"
+        path: sections/section-010/module-02/course-04-helm-and-kustomize-as-renderers.md
+      - type: reading
+        title: Question
+        path: sections/section-010/module-02/labs/lab-01/question.md
+      - type: lab
+        title: "Render A Helm Chart From Declared Values Lab"
+        path: sections/section-010/module-02/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 25m
+        topic: declarative
+        task_kind: build
+        tags: [gitops, helm, declarative, argocd]
+        learning_goals:
+          - Create an Application that renders the scout chart with helm.valuesObject
+          - Set the replica count, image tag and message in the declared values
+          - Show that the delivered Deployment matches the declared values
+        resources:
+          - name: "Argo CD Helm"
+            url: https://argo-cd.readthedocs.io/en/stable/user-guide/helm/
+      - type: reading
+        title: Summary
+        path: sections/section-010/module-02/course-05-summary.md
+
+      - type: reading
         title: Question
         path: sections/section-010/capstone/labs/lab-01/question.md
       - type: lab
@@ -169,6 +206,45 @@ modules:
         path: sections/section-020/module-01/course-04-summary.md
 
       - type: reading
+        title: "Git History, Audit And Change Control"
+        path: sections/section-020/module-02/course.md
+      - type: reading
+        title: "What The History Records"
+        path: sections/section-020/module-02/course-01-what-the-history-records.md
+      - type: reading
+        title: "Signed Commits And Tag Verification"
+        path: sections/section-020/module-02/course-02-signed-commits-and-tag-verification.md
+      - type: reading
+        title: Question
+        path: sections/section-020/module-02/labs/lab-01/question.md
+      - type: lab
+        title: "Audit A Change From The Git History Lab"
+        path: sections/section-020/module-02/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 25m
+        topic: versioning
+        task_kind: build
+        tags: [gitops, audit, git-history, tags]
+        learning_goals:
+          - Find the commit that raised the production replicas and its author
+          - Record the commit message and author in the audit-report ConfigMap
+          - Create the annotated tag replicas-incident on that commit
+        resources:
+          - name: "Git log"
+            url: https://git-scm.com/docs/git-log
+          - name: "Git tag"
+            url: https://git-scm.com/docs/git-tag
+      - type: reading
+        title: "Review, CODEOWNERS And Branch Protection"
+        path: sections/section-020/module-02/course-03-review-codeowners-and-branch-protection.md
+      - type: reading
+        title: "Rewriting History"
+        path: sections/section-020/module-02/course-04-rewriting-history.md
+      - type: reading
+        title: Summary
+        path: sections/section-020/module-02/course-05-summary.md
+
+      - type: reading
         title: Question
         path: sections/section-020/capstone/labs/lab-01/question.md
       - type: lab
@@ -236,6 +312,43 @@ modules:
       - type: reading
         title: Summary
         path: sections/section-030/module-01/course-04-summary.md
+
+      - type: reading
+        title: "The In-Cluster Agent And Pull Mechanics"
+        path: sections/section-030/module-02/course.md
+      - type: reading
+        title: "Argo CD Components"
+        path: sections/section-030/module-02/course-01-argo-cd-components.md
+      - type: reading
+        title: "Flux Controllers And The Comparison"
+        path: sections/section-030/module-02/course-02-flux-controllers-and-the-comparison.md
+      - type: reading
+        title: "Network Direction And Cluster Credentials"
+        path: sections/section-030/module-02/course-03-network-direction-and-cluster-credentials.md
+      - type: reading
+        title: "The Permissions Of The Agent"
+        path: sections/section-030/module-02/course-04-the-permissions-of-the-agent.md
+      - type: reading
+        title: Question
+        path: sections/section-030/module-02/labs/lab-01/question.md
+      - type: lab
+        title: "Read The Agent And Pull From Git Lab"
+        path: sections/section-030/module-02/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 25m
+        topic: pull
+        task_kind: build
+        tags: [gitops, pull, argocd, rbac]
+        learning_goals:
+          - Create an Application that pulls the staging overlay from Git
+          - Find which component renders manifests and which controller applies them
+          - Record in the agent-report ConfigMap whether the controller can delete namespaces
+        resources:
+          - name: "Argo CD architecture"
+            url: https://argo-cd.readthedocs.io/en/stable/operator-manual/architecture/
+      - type: reading
+        title: Summary
+        path: sections/section-030/module-02/course-05-summary.md
 
       - type: reading
         title: Question
@@ -307,6 +420,45 @@ modules:
       - type: reading
         title: Summary
         path: sections/section-040/module-01/course-04-summary.md
+
+      - type: reading
+        title: "Health, Sync Status And Feedback Loops"
+        path: sections/section-040/module-02/course.md
+      - type: reading
+        title: "Sync Status And Health Status"
+        path: sections/section-040/module-02/course-01-sync-status-and-health-status.md
+      - type: reading
+        title: "Sync Phases, Waves And Hooks"
+        path: sections/section-040/module-02/course-02-sync-phases-waves-and-hooks.md
+      - type: reading
+        title: Question
+        path: sections/section-040/module-02/labs/lab-01/question.md
+      - type: lab
+        title: "Fix A Synced But Degraded Application Lab"
+        path: sections/section-040/module-02/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 30m
+        topic: reconciliation
+        task_kind: build
+        tags: [gitops, health, sync-waves, retry, argocd]
+        learning_goals:
+          - Correct the image tag in Git so the Application becomes healthy
+          - Order the ConfigMap before the Deployment with a sync wave
+          - Add a retry policy with exponential backoff to the Application
+        resources:
+          - name: "Argo CD sync waves"
+            url: https://argo-cd.readthedocs.io/en/stable/user-guide/sync-waves/
+          - name: "Argo CD automated sync"
+            url: https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/
+      - type: reading
+        title: "Retries And Failed Syncs"
+        path: sections/section-040/module-02/course-03-retries-and-failed-syncs.md
+      - type: reading
+        title: "Observing Reconciliation"
+        path: sections/section-040/module-02/course-04-observing-reconciliation.md
+      - type: reading
+        title: Summary
+        path: sections/section-040/module-02/course-05-summary.md
 
       - type: reading
         title: Question

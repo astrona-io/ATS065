@@ -7,9 +7,13 @@ The [official objectives](https://training.linuxfoundation.org/certification/cer
 | Section | Official objective | Module | Playground | Lab | Capstone | Quiz |
 | --- | --- | --- | --- | --- | --- | --- |
 | 010 | Declarative | Declared State, Rendering And Controllers | yes | yes | yes | yes |
+| 010 | Declarative | Declarative Formats, Idempotence And Apply Semantics | yes | yes | section | section |
 | 020 | Versioned and Immutable | Versions, References And Promotion | yes | yes | yes | yes |
+| 020 | Versioned and Immutable | Git History, Audit And Change Control | yes | yes | section | section |
 | 030 | Pulled Automatically | Pull, Credentials And Webhooks | yes | yes | yes | yes |
+| 030 | Pulled Automatically | The In-Cluster Agent And Pull Mechanics | yes | yes | section | section |
 | 040 | Continuously Reconciled | Drift, Refresh And Reconciliation | yes | yes | yes | yes |
+| 040 | Continuously Reconciled | Health, Sync Status And Feedback Loops | yes | yes | section | section |
 
 A final domain quiz covers all four objectives (sections/final-domain-quiz.yaml).
 

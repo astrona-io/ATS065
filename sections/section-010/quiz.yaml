@@ -8,7 +8,7 @@ provenance: Original practice material written for this course; not official exa
 scope:
   type: section
   id: section-010
-  title: "Declared State, Rendering And Controllers"
+  title: "Declared State, Rendering, Apply Semantics And Controllers"
 questions:
   - id: ats065-010-q01
     type: single_choice
@@ -240,3 +240,233 @@ questions:
         explanation: "Correct. A declarative file does not decide this; the teams decide it and then encode the decision."
     correct_option: d
     explanation: "Correct. A declarative file does not decide this; the teams decide it and then encode the decision."
+  - id: ats065-010-q11
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Tell spec from status"
+    source_readings:
+      - sections/section-010/module-02/course-01-spec-status-and-the-declarative-api.md
+    prompt: |-
+      A Deployment has a `spec` and a `status`. Which statement is correct?
+    options:
+      - id: a
+        text: "The `spec` holds the desired state that people write, and the `status` holds the observed state that controllers write."
+        explanation: "The two halves have different writers. A controller reports what it sees in `status`."
+      - id: b
+        text: "Both halves are written by the person who applies the file."
+        explanation: "A person writes the `spec`. Controllers fill in `status`."
+      - id: c
+        text: "The `status` holds the desired state and the `spec` holds the observed state."
+        explanation: "This reverses the two halves."
+      - id: d
+        text: "The `status` is the part that belongs in the Git repository."
+        explanation: "Git holds the desired state. Observed state is reported by the cluster and does not belong in the repository."
+    correct_option: a
+    explanation: "Correct. The two halves have different writers. A controller reports what it sees in `status`."
+  - id: ats065-010-q12
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Tell spec from status"
+    source_readings:
+      - sections/section-010/module-02/course-01-spec-status-and-the-declarative-api.md
+    prompt: |-
+      A file in Git sets `spec.replicas: 3`. A cluster has 2 ready pods while a rollout runs. Which field shows the 2?
+    options:
+      - id: a
+        text: "`spec.replicas`, because it is always updated by the controller."
+        explanation: "The `spec` keeps the declared value 3."
+      - id: b
+        text: "`status.readyReplicas`, because it reports what the controller observes."
+        explanation: "Observed values are reported in `status`."
+      - id: c
+        text: "`metadata.name`, because it counts pods."
+        explanation: "The name identifies the object and does not count anything."
+      - id: d
+        text: "No field, because the API does not report observed values."
+        explanation: "Controllers publish observed values in `status`."
+    correct_option: b
+    explanation: "Correct. Observed values are reported in `status`."
+  - id: ats065-010-q13
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain idempotence"
+    source_readings:
+      - sections/section-010/module-02/course-02-create-apply-replace-and-idempotence.md
+    prompt: |-
+      A script runs `kubectl create -f deploy.yaml` twice. What happens on the second run?
+    options:
+      - id: a
+        text: "The object is updated to match the file."
+        explanation: "That is the behavior of `apply`, not `create`."
+      - id: b
+        text: "The object is deleted and created again."
+        explanation: "`create` never deletes an object."
+      - id: c
+        text: "The command fails because the object already exists."
+        explanation: "`create` is not idempotent. The second request names an object that exists, so the API returns an error."
+      - id: d
+        text: "The command succeeds and changes nothing."
+        explanation: "That would be idempotent. `create` returns an AlreadyExists error."
+    correct_option: c
+    explanation: "Correct. `create` is not idempotent. The second request names an object that exists, so the API returns an error."
+  - id: ats065-010-q14
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain client-side apply"
+    source_readings:
+      - sections/section-010/module-02/course-02-create-apply-replace-and-idempotence.md
+    prompt: |-
+      A field is removed from a manifest that was applied earlier with `kubectl apply`. After the next `kubectl apply`, what happens to that field on the live object?
+    options:
+      - id: a
+        text: "It stays, because `apply` never removes fields."
+        explanation: "`apply` removes fields it set earlier."
+      - id: b
+        text: "It is reset to the default of the controller of another object."
+        explanation: "The merge is computed from the stored last applied configuration."
+      - id: c
+        text: "The command fails with a conflict."
+        explanation: "A conflict is a server-side apply concept for fields owned by another manager."
+      - id: d
+        text: "It is removed, because the last applied configuration records that the file once set it."
+        explanation: "Client-side apply compares the last applied configuration, the file and the live object, and removes fields that were in the previous file and are gone from the new one."
+    correct_option: d
+    explanation: "Correct. Client-side apply compares the last applied configuration, the file and the live object, and removes fields that were in the previous file and are gone from the new one."
+  - id: ats065-010-q15
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Preview a change"
+    source_readings:
+      - sections/section-010/module-02/course-02-create-apply-replace-and-idempotence.md
+    prompt: |-
+      Which command shows what `apply` would change on the server without writing anything?
+    options:
+      - id: a
+        text: "`kubectl diff -f deploy.yaml`"
+        explanation: "`kubectl diff` sends the object to the server dry run and prints the difference."
+      - id: b
+        text: "`kubectl get -f deploy.yaml -o yaml`"
+        explanation: "This prints the live object and compares nothing."
+      - id: c
+        text: "`kubectl create -f deploy.yaml`"
+        explanation: "This writes the object."
+      - id: d
+        text: "`kubectl replace -f deploy.yaml`"
+        explanation: "This writes the whole object and is not a preview."
+    correct_option: a
+    explanation: "Correct. `kubectl diff` sends the object to the server dry run and prints the difference."
+  - id: ats065-010-q16
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Compare replace and apply"
+    source_readings:
+      - sections/section-010/module-02/course-02-create-apply-replace-and-idempotence.md
+    prompt: |-
+      What is the main difference between `kubectl replace` and `kubectl apply` for an existing object?
+    options:
+      - id: a
+        text: "`replace` merges the file and `apply` swaps the whole object."
+        explanation: "This reverses the two."
+      - id: b
+        text: "`replace` swaps the whole object for the file, so fields that the file omits are lost, and `apply` merges the file into the live object."
+        explanation: "Replace takes the file as the full object. Apply computes a change."
+      - id: c
+        text: "There is no difference. Both create the object when it is missing."
+        explanation: "`replace` fails when the object is missing and the two differ in how they write."
+      - id: d
+        text: "`replace` only changes labels."
+        explanation: "It writes the entire object."
+    correct_option: b
+    explanation: "Correct. Replace takes the file as the full object. Apply computes a change."
+  - id: ats065-010-q17
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain field managers"
+    source_readings:
+      - sections/section-010/module-02/course-03-server-side-apply-and-field-managers.md
+    prompt: |-
+      Two tools set `spec.replicas` on the same Deployment with server-side apply under different field manager names, with different values. What does the second request get?
+    options:
+      - id: a
+        text: "A silent overwrite, because the last writer always wins."
+        explanation: "Server-side apply detects the conflict instead of overwriting."
+      - id: b
+        text: "Nothing, because field managers are only labels."
+        explanation: "They are tracked in `managedFields` and used for conflicts."
+      - id: c
+        text: "A conflict error, unless it uses force to take ownership of the field."
+        explanation: "Server-side apply records which manager owns each field in `managedFields` and reports a conflict when another manager owns a field being set to a different value."
+      - id: d
+        text: "A deleted Deployment."
+        explanation: "A conflict does not delete the object."
+    correct_option: c
+    explanation: "Correct. Server-side apply records which manager owns each field in `managedFields` and reports a conflict when another manager owns a field being set to a different value."
+  - id: ats065-010-q18
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Use server-side apply in Argo CD"
+    source_readings:
+      - sections/section-010/module-02/course-03-server-side-apply-and-field-managers.md
+    prompt: |-
+      How does an Argo CD `Application` make its sync use server-side apply?
+    options:
+      - id: a
+        text: "It sets `spec.replace: true` on the destination."
+        explanation: "No such field exists on the destination."
+      - id: b
+        text: "It changes the repository URL."
+        explanation: "The apply method is a sync option and does not depend on the repository."
+      - id: c
+        text: "It cannot. Argo CD only supports client-side apply."
+        explanation: "Argo CD supports server-side apply through the sync option."
+      - id: d
+        text: "It adds the sync option `ServerSideApply=true`."
+        explanation: "The option is set under `syncPolicy.syncOptions`, and Argo CD then applies with a field manager instead of the client-side merge."
+    correct_option: d
+    explanation: "Correct. The option is set under `syncPolicy.syncOptions`, and Argo CD then applies with a field manager instead of the client-side merge."
+  - id: ats065-010-q19
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Declare Helm values in an Application"
+    source_readings:
+      - sections/section-010/module-02/course-04-helm-and-kustomize-as-renderers.md
+    prompt: |-
+      Where does an Argo CD `Application` set values for a Helm chart without a separate values file?
+    options:
+      - id: a
+        text: "In `spec.source.helm.valuesObject`."
+        explanation: "The `valuesObject` field holds the values as YAML inside the `Application`, so they are declared in Git with the Application."
+      - id: b
+        text: "In `spec.destination.values`."
+        explanation: "The destination names the cluster and namespace."
+      - id: c
+        text: "In the status of the `Application`."
+        explanation: "The status is written by the controller."
+      - id: d
+        text: "In the `kubectl` command that creates the Application."
+        explanation: "Values are declared in the object, not typed on a command line."
+    correct_option: a
+    explanation: "Correct. The `valuesObject` field holds the values as YAML inside the `Application`, so they are declared in Git with the Application."
+  - id: ats065-010-q20
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Pin what a render depends on"
+    source_readings:
+      - sections/section-010/module-02/course-04-helm-and-kustomize-as-renderers.md
+    prompt: |-
+      Why should a chart version or an image tag be pinned to an exact value in the declared state?
+    options:
+      - id: a
+        text: "Because Helm refuses to render unpinned values."
+        explanation: "Helm renders them. The risk is a changing result."
+      - id: b
+        text: "So the same commit renders the same manifests each time."
+        explanation: "A moving reference changes the render without a new commit, which breaks the link between the commit and what runs."
+      - id: c
+        text: "Because pinned versions render faster."
+        explanation: "The reason is repeatability, not speed."
+      - id: d
+        text: "Because Argo CD cannot read unpinned references."
+        explanation: "It can read them. The result is not repeatable."
+    correct_option: b
+    explanation: "Correct. A moving reference changes the render without a new commit, which breaks the link between the commit and what runs."
