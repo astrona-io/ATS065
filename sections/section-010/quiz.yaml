@@ -3,7 +3,7 @@ kind: question_bank
 id: ats065-010
 course_id: ATS065
 exam_code: CGOA
-status: draft
+status: alpha
 provenance: Original practice material written for this course; not official exam questions.
 scope:
   type: section
