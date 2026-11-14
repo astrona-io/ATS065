@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="https://astrona.io/courses/certified-gitops-associate-cgoa">
+    <img src="https://astrona.io/courses/certified-gitops-associate-cgoa/domains/ATS065.svg" alt="ATS065: GitOps Principles, part of the Certified GitOps Associate course on Astrona" width="100%">
+  </a>
+</p>
+
 # GitOps Principles (ATS065)
 
 Certified GitOps Associate (CGOA): GitOps Principles, worth 30% of the official curriculum. This course belongs to ATP013.
